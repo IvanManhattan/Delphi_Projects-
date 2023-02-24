@@ -5,27 +5,14 @@ program SortComparison;
 {$R *.res}
 
 uses
-  System.SysUtils, Windows;
+  System.SysUtils;
 
 type
   TArrayOfElements = array of Integer;
 
-  TPList = ^TList;
-  TList = record
-    sizeOfArray: array[1..20] of String;
-    typeOfArray: array[1..20] of String;
-    quantityTheoreticalFirst: Integer;
-    quantityPracticalFirst: Integer;
-    quantityTheoreticalSecond: Integer;
-    quantityPracticalSecond: Integer;
-    next: TPList;
-  end;
-
 var
   i, j: Integer;
   arrayOf100Elem, arrayOf100ElemSorted, arrayOf100ElemReversed: TArrayOfElements;
-  startTime, endTime, elapsedTime: Cardinal;
-  head: TPList;
 
 const
   MAX100 = 100;
@@ -153,6 +140,8 @@ begin
 end;
 
 procedure printArray(var inputArray: TArrayOfElements);
+
+
 var
   i: Integer;
 begin
@@ -162,20 +151,10 @@ begin
   end;
 end;
 
-procedure initArray(var toBeInited: TArrayOfElements; lengthOf: Integer);
-begin
-  setLength(toBeInited, lengthOf);
-  fillArray(toBeInited);
-end;
-
-
-//-------------------------------------------
-
 begin
   writeln('Start');
-  elapsedTime := 0;
-
-  initArray(arrayOf100Elem, MAX100);
+  setLength(arrayOf100Elem, MAX100);
+  fillArray(arrayOf100Elem);
   printArray(arrayOf100Elem);
 
   writeln;
@@ -191,17 +170,6 @@ begin
   setLength(arrayOf100ElemReversed, MAX100);
   arrayOf100ElemReversed := doReverseArray(arrayOf100ElemSorted);
   printArray(arrayOf100ElemReversed);
-
-  writeln;
-  writeln;
-
-  startTime := getTickCount;
-  arrayOf100ElemSorted := doBubbleSort(arrayOf100ElemReversed, Length(arrayOf100ElemReversed) - 1);
-  endTime := getTickCount;
-//  elapsedTime := (endTime - startTime);
-//  writeln(Format('Elapsed time %d ms', [endTime - startTime]));
-
-  printArray(arrayOf100ElemSorted);
 
 
 readln;
