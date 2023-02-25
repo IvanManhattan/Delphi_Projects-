@@ -201,9 +201,9 @@ begin
     write('Enter the size of the array: ');
     readln(Check);
     val(Check,Result,Error);
-    if (Error <> 0) or (Result <= 1) then
+    if (Error<>0) or (Result<=1) then
       writeln('Incorrect input');
-  until (Error = 0) and (Result > 1);
+  until (Error=0) and (Result>1);
 end;
 
 //-------------------------------------------
@@ -221,7 +221,7 @@ begin
     arrayBubble := arrayQuick;
 
     doQuickSort(arrayQuick, low(arrayQuick), high(arrayQuick), Res[k].quantityPracticalFirst);
-    doBubbleSort(arrayBubble, high(arrayBubble) - 1, Res[k].quantityPracticalSecond);
+    doBubbleSort(arrayBubble,high(arrayBubble) - 1, Res[k].quantityPracticalSecond);
 
     Res[k].typeOfArray := 'Unsorted';
 
@@ -238,40 +238,37 @@ begin
     setLength(arrayBubble, Res[k].sizeOfArray);
 
     fillArray(arrayQuick);
-    doQuickSort(arrayQuick, low(arrayQuick), high(arrayQuick), Res[k].quantityPracticalFirst);
-    Res[k].quantityPracticalFirst := 0;
     arrayBubble := arrayQuick;
 
-    doBubbleSort(arrayBubble, high(arrayBubble) - 1, Res[k].quantityPracticalSecond);
     doQuickSort(arrayQuick, low(arrayQuick), high(arrayQuick), Res[k].quantityPracticalFirst);
+    doBubbleSort(arrayBubble,high(arrayBubble) - 1, Res[k].quantityPracticalSecond);
 
-    Res[k].typeOfArray := 'Sorted';
+    Res[k].typeOfArray := 'Unsorted';
 
     Res[k].quantityTheoreticalFirst := 100;
     Res[k].quantityTheoreticalSecond := 100;
+
   end;
 
-//  for k := 12 to 17 do
-//  begin
-
-
-//  end;
-
-  writeln;
-  writeln('Result table:':36);
-  writeln;
-  writeln('Size |','   Type   |','  Experimental |':27,' Theoretical ':20);
-  writeln;
-  writeln('|':6,'| Shaker sort |':25,' Quick sort |', ' Shaker sort |',' Quick sort');
-  writeln;
-  for I:=0 to 17 do
+  for k := 12 to 17 do
   begin
-    writeln(Res[I].sizeOfArray:4,' |',Res[I].typeOfArray:9, ' |',Res[I].quantityPracticalFirst:12,' |',Res[I].quantityTheoreticalFirst:11,' |',Res[I].quantityPracticalSecond:12,' |', Res[I].quantityTheoreticalSecond:11);
-    writeln;
+    Res[k].sizeOfArray := initArray;
+
+    setLength(arrayQuick, Res[k].sizeOfArray);
+    setLength(arrayBubble, Res[k].sizeOfArray);
+
+    fillArray(arrayQuick);
+    arrayBubble := arrayQuick;
+
+    doQuickSort(arrayQuick, low(arrayQuick), high(arrayQuick), Res[k].quantityPracticalFirst);
+    doBubbleSort(arrayBubble,high(arrayBubble) - 1, Res[k].quantityPracticalSecond);
+
+    Res[k].typeOfArray := 'Unsorted';
+
+    Res[k].quantityTheoreticalFirst := 100;
+    Res[k].quantityTheoreticalSecond := 100;
+
   end;
-
-
-
 
 //  setLength(arrayOf250Elem, MAX250);
 //  initArray(arrayOf250Elem, Length(arrayOf250Elem));
