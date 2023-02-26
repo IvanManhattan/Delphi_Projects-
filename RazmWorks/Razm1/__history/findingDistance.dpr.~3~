@@ -132,7 +132,7 @@ begin
 //  distanceIs := 0;
 
   distanceIs := findDistance(arrayOfX[i], testArray[0, 0], 0, testArray[0, 0]);
-  arrayOfDistances[0] := Round(distanceIs);
+  arrayOfDistances[0] := Floor(distanceIs);
 
 
 //  for i := 0 to High(arrayOfX) - 1 do
