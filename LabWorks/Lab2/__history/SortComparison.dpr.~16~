@@ -25,6 +25,9 @@ var
   lengthOfArr: Integer;
   Res: TRes;
 
+//const
+//  ArrayOfSizes: array[0..5] of Integer = (100, 250, 500, 1000, 2000, 3000);
+
 function initArray: Integer;
 var
   Error: Integer;

@@ -22,6 +22,7 @@ type
 var
   i, j, k, l, countOfComparisonQuick, countOfComparisonBubble: Integer;
   arrayQuick, arrayBubble: TArrayOfElements;
+  lengthOfArr: Integer;
 //  arrayOf100Elem, arrayOf100ElemSorted, arrayOf100ElemReversed: TArrayOfElements;
 //  arrayOf250Elem, arrayOf250ElemSorted, arrayOf250ElemReversed: TArrayOfElements;
 //  arrayOf500Elem, arrayOf500ElemSorted, arrayOf500ElemReversed: TArrayOfElements;
@@ -55,6 +56,22 @@ begin
     counter := counter + 1;
 end;
 
+function initArray: Integer;
+var
+  Error: Integer;
+  Check: String;
+begin
+
+  repeat
+    write('Enter the size of the array: ');
+    readln(Check);
+    val(Check, Result, Error);
+    if (Error <> 0) or (Result <= 1) then
+      writeln('Incorrect input');
+  until (Error = 0) and (Result > 1);
+
+end;
+
 procedure swapElem(arr: TArrayOfElements; i, j: Integer);
 var
   temp: Integer;
@@ -70,7 +87,7 @@ var
   i: Integer;
 begin
   Randomize;
-  For i := Low(arr) to High(arr) do
+  For i := Low(arr) to High(arr) - 1 do
     arr[i]:= Random(100) + 1;
 
 end;
@@ -98,57 +115,69 @@ begin
 
 end;
 
-function doQuickSort(var toBeSortedQuick: TArrayOfElements; lowElem, highElem: Integer; var counterResult: Integer): TArrayOfElements;
+procedure doQuickSort(var toBeSortedQuick: TArrayOfElements; var counterResult: Integer);
 var
   middle: Integer;
   pivotElem: Integer;
-  i, j: Integer;
+  i, j, L, leftElem, rightElem, temp: Integer;
   comparisonCounter: Integer;
   arrayToSortQuick: TArrayOfElements;
+  stackArr: array[0..1, 0..1] of Integer;
 
 begin
-  arrayToSortQuick := toBeSortedQuick;
-//comparisonCounter := 0;
-//counterResult := 0;
-  middle := Round((lowElem + highElem) / 2);
-  pivotElem := toBeSortedQuick[middle];
+  comparisonCounter := 0;
+  L := 0;
 
-  i := lowElem;
-  j := highElem;
+  stackArr[0, 0] := low(toBeSortedQuick);
+  stackArr[0, 1] := high(toBeSortedQuick);
 
-  while i <= j do
-  begin
-    while arrayToSortQuick[i] < pivotElem do
-    begin
-//      i := i + 1;
-//      comparisonCounter := comparisonCounter + 1;
-        incrementV(i, counterResult)
-   end;
-//    isMore(arrayToSortQuick[i], pivotElem, comparisonCounter);
+  repeat
 
-    while arrayToSortQuick[j] > pivotElem do
-    begin
-//      j := j - 1;
-//      comparisonCounter := comparisonCounter + 1;
-        decrementV(j, counterResult);
-    end;
-//    isLess(arrayToSortQuick[j], pivotElem, comparisonCounter);
+    leftElem := stackArr[L, 0];
+    rightElem := stackArr[L, 1];
 
-    if i <= j then
-    begin
-      swapElem(arrayToSortQuick, i, j);
-      inc(i);
-      dec(j);
-    end;
+    Dec(L);
 
-  if lowElem < j then
-    doQuickSort(arrayToSortQuick, lowElem, j, counterResult);
+    repeat
+      i := leftELem;
+      j := rightElem;
 
-  if highElem > i then
-    doQuickSort(arrayToSortQuick, i, highElem, counterResult);
-  end;
+      pivotElem := toBeSortedQuick[(leftElem + rightElem) div 2];
 
-  result := arrayToSortQuick;
+      repeat
+        while toBeSortedQuick[i] < pivotElem do
+        begin
+          inc(i);
+          inc(counterResult);
+        end;
+
+        while toBeSortedQuick[j] > pivotElem do
+        begin
+          dec(j);
+          inc(counterResult);
+        end;
+
+        if i <= j then
+        begin
+          temp := toBeSortedQuick[i];
+          toBeSortedQuick[i] := toBeSortedQuick[j];
+          toBeSortedQuick[j] := temp;
+          inc(i);
+          dec(j);
+        end;
+      until i > j;
+
+      if i < rightElem then
+      begin
+        inc(L);
+        StackArr[L, 0] := i;
+        StackArr[L, 1] := rightElem;
+      end;
+      rightElem := j;
+    until leftElem >= rightElem;
+
+
+  until L < 0 ;
 
 end;
 
@@ -190,27 +219,25 @@ begin
   end;
 end;
 
-function initArray: Integer;
-var
-  Error: Integer;
-  Check: String;
-begin
-//  setLength(toBeInited, lengthOf);
-//  fillArray(toBeInited);
-  repeat
-    write('Enter the size of the array: ');
-    readln(Check);
-    val(Check,Result,Error);
-    if (Error<>0) or (Result<=1) then
-      writeln('Incorrect input');
-  until (Error=0) and (Result>1);
-end;
+
 
 //-------------------------------------------
 
 begin
+//    Res[k].sizeOfArray := initArray;
+    lengthOfArr := 100;
+    countOfComparisonQuick := 0;
 
-  for k := 0 to 5 do
+    setLength(arrayQuick, lengthOfArr);
+    fillArray(arrayQuick);
+
+    doQuickSort(arrayQuick, countOfComparisonQuick);
+
+    printArray(arrayQuick);
+    writeln(countOfComparisonQuick);
+
+
+(*  for k := 0 to 5 do
   begin
     Res[k].sizeOfArray := initArray;
 
@@ -220,8 +247,8 @@ begin
     fillArray(arrayQuick);
     arrayBubble := arrayQuick;
 
-    doQuickSort(arrayQuick, low(arrayQuick), high(arrayQuick), Res[k].quantityPracticalFirst);
-    doBubbleSort(arrayBubble,high(arrayBubble) - 1, Res[k].quantityPracticalSecond);
+    doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
+    doBubbleSort(arrayBubble, high(arrayBubble) - 1, Res[k].quantityPracticalSecond);
 
     Res[k].typeOfArray := 'Unsorted';
 
@@ -238,37 +265,42 @@ begin
     setLength(arrayBubble, Res[k].sizeOfArray);
 
     fillArray(arrayQuick);
+    doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
+    Res[k].quantityPracticalFirst := 0;
     arrayBubble := arrayQuick;
 
-    doQuickSort(arrayQuick, low(arrayQuick), high(arrayQuick), Res[k].quantityPracticalFirst);
-    doBubbleSort(arrayBubble,high(arrayBubble) - 1, Res[k].quantityPracticalSecond);
+    doBubbleSort(arrayBubble, high(arrayBubble) - 1, Res[k].quantityPracticalSecond);
+    doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
 
-    Res[k].typeOfArray := 'Unsorted';
+    Res[k].typeOfArray := 'Sorted';
 
     Res[k].quantityTheoreticalFirst := 100;
     Res[k].quantityTheoreticalSecond := 100;
-
   end;
 
-  for k := 12 to 17 do
+
+
+//  for k := 12 to 17 do
+//  begin
+
+
+//  end;
+
+  writeln;
+  writeln('Result table:':36);
+  writeln;
+  writeln('Size |','   Type   |','  Experimental |':27,' Theoretical ':20);
+  writeln;
+  writeln('|':6,'| Shaker sort |':25,' Quick sort |', ' Shaker sort |',' Quick sort');
+  writeln;
+  for I:=0 to 17 do
   begin
-    Res[k].sizeOfArray := initArray;
-
-    setLength(arrayQuick, Res[k].sizeOfArray);
-    setLength(arrayBubble, Res[k].sizeOfArray);
-
-    fillArray(arrayQuick);
-    arrayBubble := arrayQuick;
-
-    doQuickSort(arrayQuick, low(arrayQuick), high(arrayQuick), Res[k].quantityPracticalFirst);
-    doBubbleSort(arrayBubble,high(arrayBubble) - 1, Res[k].quantityPracticalSecond);
-
-    Res[k].typeOfArray := 'Unsorted';
-
-    Res[k].quantityTheoreticalFirst := 100;
-    Res[k].quantityTheoreticalSecond := 100;
-
+    writeln(Res[I].sizeOfArray:4,' |',Res[I].typeOfArray:9, ' |',Res[I].quantityPracticalFirst:12,' |',Res[I].quantityTheoreticalFirst:11,' |',Res[I].quantityPracticalSecond:12,' |', Res[I].quantityTheoreticalSecond:11);
+    writeln;
   end;
+
+*)
+
 
 //  setLength(arrayOf250Elem, MAX250);
 //  initArray(arrayOf250Elem, Length(arrayOf250Elem));

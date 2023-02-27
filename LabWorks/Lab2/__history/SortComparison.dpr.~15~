@@ -25,6 +25,9 @@ var
   lengthOfArr: Integer;
   Res: TRes;
 
+//const
+//  ArrayOfSizes: array[0..5] of Integer = (100, 250, 500, 1000, 2000, 3000);
+
 function initArray: Integer;
 var
   Error: Integer;
@@ -61,22 +64,26 @@ begin
 
 end;
 
-procedure doReverseArray(var toBeReversedArray: TArrayOfElements);
+function doReverseArray(var toBeReversedArray: TArrayOfElements): TArrayOfElements;
 var
   i, j, temp: Integer;
+  arrayToReverse: TArrayOfElements;
 
 begin
+  arrayToReverse := toBeReversedArray;
   i := 0;
-  j := High(toBeReversedArray) - 1;
+  j := Length(arrayToReverse) - 1;
 
   while i < j do
   begin
-    temp := toBeReversedArray[i];
-    toBeReversedArray[i] := toBeReversedArray[j];
-    toBeReversedArray[j] := temp;
+    temp := arrayToReverse[i];
+    arrayToReverse[i] := arrayToReverse[j];
+    arrayToReverse[j] := temp;
     inc(i);
     dec(j);
   end;
+
+  result := arrayToReverse;
 
 end;
 
@@ -163,10 +170,9 @@ begin
         toBeSortedBubble[j] := toBeSortedBubble[j + 1];
         toBeSortedBubble[j + 1] := Temp;
 //        swapElem(arrayToSortBubble, j, j + 1);
-        inc(counterResult);
+        counterResult := counterResult + 1;
       end;
     end;
-
   end;
 
 end;
@@ -183,7 +189,6 @@ end;
 
 
 //-------------------------------------------
-
 
 begin
 
@@ -235,28 +240,11 @@ for k := 0 to 5 do
 
 
 
-  for k := 12 to 17 do
-  begin
-    Res[k].sizeOfArray := Res[k - 6].sizeOfArray;
+//  for k := 12 to 17 do
+//  begin
 
-    setLength(arrayQuick, Res[k].sizeOfArray);
-    setLength(arrayBubble, Res[k].sizeOfArray);
 
-    fillArray(arrayQuick);
-    fillArray(arrayBubble);
-
-    doReverseArray(arrayQuick);
-    doReverseArray(arrayBubble);
-
-    doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
-    doBubbleSort(arrayBubble, Res[k].quantityPracticalSecond);
-
-    Res[k].typeOfArray := 'Inverted';
-
-    Res[k].quantityTheoreticalFirst := 100;
-    Res[k].quantityTheoreticalSecond := 100;
-
-  end;
+//  end;
 
   writeln;
   writeln('Result table:':36);
