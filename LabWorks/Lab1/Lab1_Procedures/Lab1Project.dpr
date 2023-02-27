@@ -30,15 +30,19 @@ end;
 
 procedure doMultiplyMatrix(const firstMatrix1, secondMatrix1: TMatrix; var resultOf: TMatrix);
 var
-  i, j, l, lengthOfArray: Integer;
+  i, j, l, s, lengthOfArray: Integer;
 begin
   lengthOfArray := length(firstMatrix1);
 
   for i := 1 to lengthOfArray do
     for j := 1 to lengthOfArray do
+    begin
+    s := 0;
       for l := 1 to lengthOfArray do
-        resultOf[i, j] := firstMatrix1[i, l] * secondMatrix1[l, j];
+        s := s + firstMatrix1[i, l] * secondMatrix1[l, j];
+    resultOf[i, j] := s;
 
+    end;
 end;
 
 procedure doMultiplyNum(const firstMatrix1: TMatrix; const number: Integer; var resultOf: TMatrix);
@@ -86,13 +90,14 @@ begin
   doMultiplyMatrix(Temp1, Temp2, Temp3);
   doPrintMatrix(Temp3);
 
-  writeln('Multiply of matrix A and B -  A * B: ');
-  doMultiplyMatrix(A, B, Temp4);
+  writeln('Multiply of matrix A and number - 2 * A');
+  doMultiplyNum(A, 2, Temp4);
   doPrintMatrix(Temp4);
 
-  writeln('Multiply of matrix A and number -  2 * Temp4: ');
-  doMultiplyNum(Temp4, 2, Temp5);
+  writeln('Multiply of matrix Temp4 and B -  Temp4 * B: ');
+  doMultiplyMatrix(Temp4, B, Temp5);
   doPrintMatrix(Temp5);
+
 
   writeln('The end result is  -  2 * A * B - (A + B) * (A - B): ');
   doSumOrSubOfMatrix(Temp5, Temp3, false, resultMatrix);
