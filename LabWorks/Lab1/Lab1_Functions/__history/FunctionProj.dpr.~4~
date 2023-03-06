@@ -18,47 +18,6 @@ uses
 type
   TMatrix = array[1..3, 1..3] of integer;
 
-// Declaring the initial matrixes used in the expression
-// Tepm1, Temp2, Temp3, Temp4, Temp5 - intemideate results
-// resultMatrix - result of expression
-var
-  A: TMatrix;
-  B: TMatrix;
-  resultOf: Integer;
-  Temp1, Temp2, Temp3, Temp4, Temp5, resultMatrix: TMatrix;
-  I, J, L: Integer;
-
-// Subprogram for inputting matrixes
-{
-  Matrix inputMatrix is being entered by user. Inputted values are
-  being checked. In case of the incorrect input it displays an error
-  message
-}
-procedure initArray(var inputMatrix: TMatrix);
-var
-  i, j: Integer;
-  check: String;
-  flags: Integer;
-begin
-
-  for i := 1 to 3 do
-  begin
-    for j := 1 to 3 do
-    begin
-       repeat
-        Write('Enter the [' + intToStr(i) + ', ' + intToStr(j) + '] element]: ');
-        readln(check);
-        val(check, resultOf, flags);
-        if (flags <> 0) then
-          writeln('Incorrect input')
-        else
-          inputMatrix[i, j] := strToInt(check);
-      until (flags = 0) and (resultOf > -10);
-    end;
-  end;
-
-end;
-
 // Subprogram for calculating the sum or sub of matrixes
 {
   Two matrixes (firstMatrix, secondMatrix) of the same size are given.
@@ -165,13 +124,17 @@ begin
   writeln;
 end;
 
-begin
 
-// Inputting matrixes
-  writeln('Enter the matrix A: ');
-  initArray(A);
-  writeln('Enter the matrix B: ');
-  initArray(B);
+// Declaring the initial matrixes used in the expression
+// Tepm1, Temp2, Temp3, Temp4, Temp5 - intemideate results
+// resultMatrix - result of expression
+var
+  A: TMatrix = ((4, -2, 0), (1, 1, 2), (3, -2, 0));
+  B: TMatrix = ((0, -2, 6), (2, 4, 3), (0, -3, 4));
+  Temp1, Temp2, Temp3, Temp4, Temp5, resultMatrix: TMatrix;
+  I, J, L: Integer;
+
+begin
 
 // Outputting the initial matrixes
   writeln('Matrix A: ');

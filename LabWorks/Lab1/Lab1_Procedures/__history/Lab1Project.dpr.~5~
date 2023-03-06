@@ -1,4 +1,4 @@
-program FunctionProj;
+program Lab1Project;
 
 {
   Create a program that calculates matrix expressions. Find
@@ -16,12 +16,11 @@ uses
 
 // Determining the type for matrixes
 type
-  TMatrix = array[1..3, 1..3] of integer;
+  TMatrix = array[1..3, 1..3] of Integer;
 
-// Declaring the initial matrixes used in the expression
-// Tepm1, Temp2, Temp3, Temp4, Temp5 - intemideate results
-// resultMatrix - result of expression
 var
+//  A: TMatrix = ((4, -2, 0), (1, 1, 2), (3, -2, 0));
+//  B: TMatrix = ((0, -2, 6), (2, 4, 3), (0, -3, 4));
   A: TMatrix;
   B: TMatrix;
   resultOf: Integer;
@@ -58,7 +57,6 @@ begin
   end;
 
 end;
-
 // Subprogram for calculating the sum or sub of matrixes
 {
   Two matrixes (firstMatrix, secondMatrix) of the same size are given.
@@ -66,7 +64,7 @@ end;
   to the result of summation or subtraction of
   the given matrixes.
 }
-function doSumOrSubOfMatrix(const firstMatrix, secondMatrix: TMatrix; const flags: boolean): TMatrix;
+procedure doSumOrSubOfMatrix(const firstMatrix, secondMatrix: TMatrix; const flags: boolean; var resultOf: TMatrix);
 
 // Variable declaration section
 var
@@ -75,7 +73,7 @@ var
   i,j, m, n – counter variables;
 }
 
-  begin
+begin
 
 // set matrix's length
   m := length(firstMatrix);
@@ -85,13 +83,12 @@ var
     for j := 1 to n do
     begin
     if flags then
-      result[i, j] := firstMatrix[i, j] + secondMatrix[i, j]
+      resultOf[i, j] := firstMatrix[i, j] + secondMatrix[i, j]
     else
-      result[i, j] := firstMatrix[i, j] - secondMatrix[i, j]
+      resultOf[i, j] := firstMatrix[i, j] - secondMatrix[i, j]
     end;
 
 end;
-
 
 // Subprogram for multiplying the matrixes
 {
@@ -99,7 +96,7 @@ end;
   The subprogram returns the matrix that is equal
   to the result of the multiplication of the matrixes.
 }
-function doMultiplyMatrix(const firstMatrix1, secondMatrix1: TMatrix): TMatrix;
+procedure doMultiplyMatrix(const firstMatrix1, secondMatrix1: TMatrix; var resultOf: TMatrix);
 
 // Declaring counter variables
 var
@@ -115,13 +112,10 @@ begin
     s := 0;
       for l := 1 to lengthOfArray do
         s := s + firstMatrix1[i, l] * secondMatrix1[l, j];
-
-    result[i, j] := s;
+    resultOf[i, j] := s;
 
     end;
-
 end;
-
 
 // Subprogram for multiplying the matrix by a number
 {
@@ -129,7 +123,7 @@ end;
   subprogram returns the value of the matrix multiplied by
   a number.
 }
-function doMultiplyNum(const firstMatrix1: TMatrix; const number: Integer): TMatrix;
+procedure doMultiplyNum(const firstMatrix1: TMatrix; const number: Integer; var resultOf: TMatrix);
 
 // Declaring counter variables
 var
@@ -141,13 +135,13 @@ begin
 
   for i := 1 to lengthOfArray do
     for j := 1 to lengthOfArray do
-        result[i, j] := firstMatrix1[i, j] * number
+        resultOf[i, j] := firstMatrix1[i, j] * number
 
 end;
 
 // Subprogram for outputting the matrix
 {
-  A matrix X1 is given. The procedure outputs the
+  A matrix outputMatrix is given. The procedure outputs the
   formatted values of the matrix elements.
 }
 procedure doPrintMatrix(const outputMatrix: TMatrix);
@@ -165,6 +159,11 @@ begin
   writeln;
 end;
 
+// Declaring the initial matrixes used in the expression
+// Tepm1, Temp2, Temp3, Temp4, Temp5 - intemideate results
+// resultMatrix - result of expression
+
+
 begin
 
 // Inputting matrixes
@@ -181,28 +180,28 @@ begin
   doPrintMatrix(B);
 
   writeln('Sum of matrix A and B -  (A + B): ');
-  Temp1 := doSumOrSubOfMatrix(A, B, true);
+  doSumOrSubOfMatrix(A, B, true, Temp1);
   doPrintMatrix(Temp1);
 
   writeln('Difference of matrix A and B -  (A - B): ');
-  Temp2 := doSumOrSubOfMatrix(A, B, false);
+  doSumOrSubOfMatrix(A, B, false, Temp2);
   doPrintMatrix(Temp2);
 
   writeln('Multiply of matrix Temp1 and Temp2 -  (A + B) * (A - B): ');
-  Temp3 := doMultiplyMatrix(Temp1, Temp2);
+  doMultiplyMatrix(Temp1, Temp2, Temp3);
   doPrintMatrix(Temp3);
 
-  writeln('Multiply of matrix 2 and A -  A * B: ');
-  Temp4 := doMultiplyNum(A, 2);
+  writeln('Multiply of matrix A and number - 2 * A');
+  doMultiplyNum(A, 2, Temp4);
   doPrintMatrix(Temp4);
 
-  writeln('Multiply of matrix Temp4 and -  Temp4 * B: ');
-  Temp5 := doMultiplyMatrix(Temp4, B);
+  writeln('Multiply of matrix Temp4 and B -  Temp4 * B: ');
+  doMultiplyMatrix(Temp4, B, Temp5);
   doPrintMatrix(Temp5);
 
 // Calculating the value of the expression
   writeln('The end result is  -  2 * A * B - (A + B) * (A - B): ');
-  resultMatrix := doSumOrSubOfMatrix(Temp5, Temp3, false);
+  doSumOrSubOfMatrix(Temp5, Temp3, false, resultMatrix);
   doPrintMatrix(resultMatrix);
 
   writeln('Press any key to end...');
