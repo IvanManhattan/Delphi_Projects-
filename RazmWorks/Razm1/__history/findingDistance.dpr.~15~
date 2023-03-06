@@ -22,7 +22,6 @@ var
 //  arrayOfDistances: TArrayOfDistances;
   distanceOf: Real;
   resultOf: Integer;
-  endingX: Integer;
 
 procedure initArray(var arrayOf: TArrayOfCoordinates);
 var
@@ -187,7 +186,7 @@ begin
 
 end;
 
-function readingDistance(const arrayOf: TArrayOfCoordinates): Integer;
+function readingDistance(const arrayOf: TArrayOfCoordinates): TArrayOfDistances;
 var
   i, j, k, length, nullX, maxI, minI, needI: Integer;
   testArray, testArraySorted: TArrayOfCoordinates;
@@ -195,8 +194,7 @@ var
   arrayOfHighest: TArrayOfDistances;
   arrayOfDistances: TMatrixOfDistances;
   distanceIs: Real;
-  maxE, minE: Real;
-  needE: Integer;
+  maxE, minE, needE: Real;
 
 const
   ROWS = 9;
@@ -240,7 +238,7 @@ begin
   findElem(arrayOfDistances, length, minE, needI);
   needE := arrayOfX[needI];
 
-  result := needE;
+
 //  result := arrayOfDistances;
 
 end;
@@ -253,15 +251,12 @@ begin
 //  sortedArrayOfCoorfinates := sortArrayByX(arrayOfCoordinates);
 //  printArray(sortedArrayOfCoorfinates);
 
-//  initArray(arrayOfCoordinates);
-//  arrayOfDistances := readingDistance(arrayOfCoordinates);
-
-//  for q := 0 to High(arrayOfDistances) - 1 do
-//    write(arrayOfDistances[q]:7:2);
-
   initArray(arrayOfCoordinates);
-  endingX := readingDistance(arrayOfCoordinates);
-  writeln(endingX);
+  arrayOfDistances := readingDistance(arrayOfCoordinates);
+
+  for q := 0 to High(arrayOfDistances) - 1 do
+    write(arrayOfDistances[q]:7:2);
+
 
 readln;
 end.

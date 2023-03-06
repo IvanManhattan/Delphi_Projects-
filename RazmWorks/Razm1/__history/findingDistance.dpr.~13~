@@ -11,6 +11,7 @@ type
   TArrayOfCoordinates = array[0..9, 0..1] of Integer;
   TArrayOfX = array of Integer;
   TArrayOfDistances = array of Real;
+  TMatrixOfDistances = array of array of Real;
 
 var
   q: Integer;
@@ -93,57 +94,139 @@ begin
   
 end;
 
-function findDistance(x1, x2, y1, y2: Integer): Real;
+function findDistance(var x1, x2, y1, y2: Integer): Real;
+var
+  tempX, tempY: real;
 begin
-  result := sqrt(sqr(x2 - x1) + sqr(y2 - y2));
+  tempX := x2 - x1;
+  tempY := y2 - y1;
+  result := sqrt(sqr(tempX) + sqr(tempY));
+end;
+
+procedure findMaxElem(const arrayOfDistances: TMatrixOfDistances; const length: Integer; const perI: Integer; var maxE: Real; var maxJ: Integer);
+var
+  i, j: Integer;
+  tempJ: Integer;
+  tempE, nextE: Real;
+begin
+  i := perI;
+  j := 0;
+  tempE := 0;
+  tempJ := j;
+
+  for j := 0 to length - 1 do
+  begin
+  nextE := arrayOfDistances[i, j];
+    if tempE < nextE then
+    begin
+      tempE := nextE;
+      tempJ := j;
+    end;
+  end;
+
+  maxE :=  tempE;
+  maxJ := tempJ;
+
+end;
+
+procedure findMinElem(const arrayOfHighest: TArrayOfDistances; var minE: Real; var minI: Integer);
+var
+  j: Integer;
+  tempJ: Integer;
+  tempE, nextE: Real;
+begin
+
+  tempE := arrayOfHighest[0];
+
+  for j := 1 to high(arrayOfHighest) - 1 do
+  begin
+    if tempE > arrayOfHighest[j] then
+    begin
+      tempE := arrayOfHighest[j];
+      tempJ := j;
+    end;
+
+  end;
+
+  minE := tempE;
+  minI := tempJ;
+
+end;
+
+procedure findElem(const arrayOfDistances: TMatrixOfDistances; const length: Integer; const elem: Real; var elemIX: Integer);
+var
+  i: Integer;
+  j: Integer;
+  tempI: Integer;
+begin
+
+  for i := 0 to 9 do
+    for j := 0 to length - 1 do
+    begin
+      if arrayOfDistances[i, j] = elem then
+      begin
+        tempI := i;
+      end;
+    end;
+
+  elemIX := tempI;
+
 end;
 
 function readingDistance(const arrayOf: TArrayOfCoordinates): TArrayOfDistances;
 var
-  i, j, length: Integer;
+  i, j, k, length, nullX, maxI, minI, needI: Integer;
   testArray, testArraySorted: TArrayOfCoordinates;
   arrayOfX: TArrayOfX;
-  arrayOfDistances: TArrayOfDistances;
+  arrayOfHighest: TArrayOfDistances;
+  arrayOfDistances: TMatrixOfDistances;
   distanceIs: Real;
-  
+  maxE, minE, needE: Real;
+
+const
+  ROWS = 9;
+
 begin
-  i := 0;
-  j := 0;
+  k := 0;
+  nullX := 0;
+  maxE := 0;
+  maxI := 0;
   testArray := arrayOf;
   testArraySorted := sortArrayByX(testArray);
-  
-//  length := testArraySorted[high(testArraySorted) - 1, 0] - testArraySorted[low(testArraySorted), 0];
-  length := testArraySorted[9, 0] - testArraySorted[0, 0] + 1;
+
+  length := testArraySorted[9, 0] - testArraySorted[0, 0];
   setLength(arrayOfX, length);
+  setLength(arrayOfDistances, 10, length);
+  setLength(arrayOfHighest, 10);
   arrayOfX[0] := testArraySorted[0, 0];
-  arrayOfX[High(arrayOfX)] := testArraySorted[high(testArraySorted), 0]; // !
+  arrayOfX[High(arrayOfX)] := testArraySorted[high(testArraySorted), 0];
 
-  setLength(arrayOfDistances, length);
-
-    
-  for i := 1 to high(arrayOfX) - 1 do
+  for i := 1 to high(arrayOfX) do
   begin
     arrayOfX[i] := arrayOFx[0] + i;
   end;
 
-  for i := 0 to High(arrayOfDistances) - 1 do
-    arrayOfDistances[i] := Floor(0);
+  while k < ROWS do
+  begin
+    for i := 0 to ROWS do
+    begin
+      for j := 0 to length - 1 do
+      begin
+        arrayOfDistances[i, j] := findDistance(arrayOfX[j], testArraySorted[i, 0], nullX, testArraySorted[i, 1]);
+      end;
+      findMaxElem(arrayOfDistances, length, i, maxE, maxI);
+      arrayOfHighest[k] := maxE;
+      k := k + 1;
+    end;
 
-//  distanceIs := 0;
+  end;
 
-  distanceIs := findDistance(arrayOfX[i], testArray[0, 0], 0, testArray[0, 0]);
-  arrayOfDistances[0] := Floor(distanceIs);
-
-
-//  for i := 0 to High(arrayOfX) - 1 do
-//  begin
-//    findDistance(arrayOfX[i], testArray[0, 0], 0, testArray[0, 0], distanceIs);
-//    arrayOfDistances[i] := distanceIs;
-//  end;
+  findMinElem(arrayOfHighest, minE, minI);
+  findElem(arrayOfDistances, length, minE, needI);
+  needE := arrayOfX[needI];
 
 
-  result := arrayOfDistances;  
-    
+//  result := arrayOfDistances;
 
 end;
 
@@ -159,7 +242,7 @@ begin
   arrayOfDistances := readingDistance(arrayOfCoordinates);
 
   for q := 0 to High(arrayOfDistances) - 1 do
-    write(arrayOfDistances[q]);
+    write(arrayOfDistances[q]:7:2);
 
 
 readln;

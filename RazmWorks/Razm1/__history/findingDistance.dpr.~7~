@@ -5,7 +5,7 @@ program findingDistance;
 {$R *.res}
 
 uses
-  System.SysUtils;
+  System.SysUtils, Math;
 
 type
   TArrayOfCoordinates = array[0..9, 0..1] of Integer;
@@ -13,6 +13,7 @@ type
   TArrayOfDistances = array of Real;
 
 var
+  q: Integer;
   arrayOfCoordinates: TArrayOfCoordinates;
   sortedArrayOfCoorfinates: TArrayOfCoordinates;
   arrayOfX: TArrayOfX;
@@ -92,9 +93,9 @@ begin
   
 end;
 
-procedure findDistance(x1, x2, y1, y2: Integer; var distance: Real);
+function findDistance(x1, x2, y1, y2: Integer): Real;
 begin
-  distance := sqrt(sqr(x2 - x1) + sqr(y2 - y2));  
+  result := sqrt(sqr(x2 - x1) + sqr(y2 - y2));
 end;
 
 function readingDistance(const arrayOf: TArrayOfCoordinates): TArrayOfDistances;
@@ -110,9 +111,9 @@ begin
   j := 0;
   testArray := arrayOf;
   testArraySorted := sortArrayByX(testArray);
-  
+
 //  length := testArraySorted[high(testArraySorted) - 1, 0] - testArraySorted[low(testArraySorted), 0];
-  length := testArraySorted[9, 0] - testArraySorted[0, 0];
+  length := testArraySorted[9, 0] - testArraySorted[0, 0] + 1;
   setLength(arrayOfX, length);
   arrayOfX[0] := testArraySorted[0, 0];
   arrayOfX[High(arrayOfX)] := testArraySorted[high(testArraySorted), 0]; // !
@@ -120,16 +121,34 @@ begin
   setLength(arrayOfDistances, length);
 
     
-  for i := 1 to high(arrayOfX) - 2 do
+  for i := 1 to high(arrayOfX) - 1 do
   begin
     arrayOfX[i] := arrayOFx[0] + i;
   end;
 
-  for i := 0 to High(arrayOfX) - 1 do
-  begin
-    findDistance(arrayOfX[i], testArray[0, 0], 0, testArray[0, 0], distanceIs);
-    arrayOfDistances[i] := distanceIs;      
-  end;
+  for i := 0 to High(arrayOfDistances) - 1 do
+    arrayOfDistances[i] := 1;
+
+  distanceIs := 0;
+
+//  distanceIs := findDistance(arrayOfX[i], testArray[0, 0], 0, testArray[0, 1]);
+//  distanceIs := sqrt(sqr(arrayOfX[0] - testArray[0, 0]) + sqr(0 - testArray[0, 1]));
+
+
+
+
+
+
+
+
+  arrayOfDistances[0] := distanceIs;
+
+
+//  for i := 0 to High(arrayOfX) - 1 do
+//  begin
+//    findDistance(arrayOfX[i], testArray[0, 0], 0, testArray[0, 0], distanceIs);
+//    arrayOfDistances[i] := distanceIs;
+//  end;
 
 
   result := arrayOfDistances;  
@@ -147,6 +166,9 @@ begin
 
   initArray(arrayOfCoordinates);
   arrayOfDistances := readingDistance(arrayOfCoordinates);
+
+  for q := 0 to High(arrayOfDistances) - 1 do
+    write(arrayOfDistances[q]:7:2);
 
 
 readln;
