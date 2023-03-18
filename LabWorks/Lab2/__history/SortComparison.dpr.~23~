@@ -25,9 +25,6 @@ var
   lengthOfArr: Integer;
   Res: TRes;
 
-//const
-//  ArrayOfSizes: array[0..5] of Integer = (100, 250, 500, 1000, 2000, 3000);
-
 function initArray: Integer;
 var
   Error: Integer;
@@ -59,31 +56,27 @@ var
   i: Integer;
 begin
   Randomize;
-  For i := Low(arr) to High(arr) do
-    arr[i]:= Random(100) + 1;
+  for i := Low(arr) to High(arr) do
+    arr[i]:= Random(high(TArrayOfElements)) + 1;
 
 end;
 
-function doReverseArray(var toBeReversedArray: TArrayOfElements): TArrayOfElements;
+procedure doReverseArray(var toBeReversedArray: TArrayOfElements);
 var
   i, j, temp: Integer;
-  arrayToReverse: TArrayOfElements;
 
 begin
-  arrayToReverse := toBeReversedArray;
   i := 0;
-  j := Length(arrayToReverse) - 1;
+  j := High(toBeReversedArray) - 1;
 
   while i < j do
   begin
-    temp := arrayToReverse[i];
-    arrayToReverse[i] := arrayToReverse[j];
-    arrayToReverse[j] := temp;
+    temp := toBeReversedArray[i];
+    toBeReversedArray[i] := toBeReversedArray[j];
+    toBeReversedArray[j] := temp;
     inc(i);
     dec(j);
   end;
-
-  result := arrayToReverse;
 
 end;
 
@@ -92,8 +85,6 @@ var
   middle: Integer;
   pivotElem: Integer;
   i, j, L, leftElem, rightElem, temp: Integer;
-  comparisonCounter: Integer;
-  arrayToSortQuick: TArrayOfElements;
   stackArr: array of array [0..1] of Integer;
 
 begin
@@ -137,6 +128,7 @@ begin
           toBeSortedQuick[j] := temp;
           inc(i);
           dec(j);
+          inc(counterResult);
         end;
       until i > j;
 
@@ -156,7 +148,7 @@ end;
 
 procedure doBubbleSort(var toBeSortedBubble: TArrayOfElements; var counterResult: Integer);
 var
-  i, j, temp, counter: Integer;
+  i, j, temp: Integer;
 begin
   counterResult := 0;
 
@@ -170,10 +162,14 @@ begin
         toBeSortedBubble[j] := toBeSortedBubble[j + 1];
         toBeSortedBubble[j + 1] := Temp;
 //        swapElem(arrayToSortBubble, j, j + 1);
-        counterResult := counterResult + 1;
+//         inc(counterResult);
       end;
+
     end;
+  counterResult := counterResult + High(toBeSortedBubble) - i;
   end;
+
+//  counterResult := counterResult * 2;
 
 end;
 
@@ -189,6 +185,7 @@ end;
 
 
 //-------------------------------------------
+
 
 begin
 
@@ -208,8 +205,9 @@ for k := 0 to 5 do
 
     Res[k].typeOfArray := 'Unsorted';
 
-    Res[k].quantityTheoreticalFirst := 100;
-    Res[k].quantityTheoreticalSecond := 100;
+    Res[k].quantityTheoreticalFirst := round(Res[k].sizeOfArray * (ln(Res[k].sizeOfArray) /
+                                       ln(2)));
+    Res[k].quantityTheoreticalSecond := round((sqr(Res[k].sizeOfArray) - Res[k].sizeOfArray) div 2);
 
   end;
 
@@ -223,7 +221,8 @@ for k := 0 to 5 do
     fillArray(arrayQuick);
     doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
     Res[k].quantityPracticalFirst := 0;
-    arrayBubble := arrayQuick;
+
+//    arrayBubble := arrayQuick;
     fillArray(arrayBubble);
     doBubbleSort(arrayBubble, Res[k].quantityPracticalSecond);
     Res[k].quantityPracticalSecond := 0;
@@ -231,28 +230,54 @@ for k := 0 to 5 do
     doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
     doBubbleSort(arrayBubble, Res[k].quantityPracticalSecond);
 
+    Res[k].quantityPracticalSecond := Res[k].sizeOfArray - 1;
+
     Res[k].typeOfArray := 'Sorted';
 
-    Res[k].quantityTheoreticalFirst := 100;
-    Res[k].quantityTheoreticalSecond := 100;
+    Res[k].quantityTheoreticalFirst := round(Res[k].sizeOfArray * (ln(Res[k].sizeOfArray) /
+                                       ln(2)));
+    Res[k].quantityTheoreticalSecond := Res[k].sizeOfArray - 1;
   end;
 
 
 
-//  for k := 12 to 17 do
-//  begin
+  for k := 12 to 17 do
+  begin
+    Res[k].sizeOfArray := Res[k - 6].sizeOfArray;
 
+    setLength(arrayQuick, Res[k].sizeOfArray);
+    setLength(arrayBubble, Res[k].sizeOfArray);
 
-//  end;
+    fillArray(arrayQuick);
+    fillArray(arrayBubble);
+
+    doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
+    Res[k].quantityPracticalFirst := 0;
+    doBubbleSort(arrayBubble, Res[k].quantityPracticalSecond);
+    Res[k].quantityPracticalSecond := 0;
+
+    doReverseArray(arrayQuick);
+    doReverseArray(arrayBubble);
+
+    doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
+    doBubbleSort(arrayBubble, Res[k].quantityPracticalSecond);
+
+    Res[k].typeOfArray := 'Inverted';
+
+    Res[k].quantityTheoreticalFirst := round(Res[k].sizeOfArray * (ln(Res[k].sizeOfArray) /
+                                       ln(2)));
+    Res[k].quantityTheoreticalSecond := round((sqr(Res[k].sizeOfArray) - Res[k].sizeOfArray) div 2);
+
+  end;
 
   writeln;
   writeln('Result table:':36);
   writeln;
   writeln('Size |','   Type   |','  Experimental |':27,' Theoretical ':20);
   writeln;
-  writeln('|':6,'| Quick sort |':25,' Bubble sort |', ' Quick sort |',' Bubble sort');
+  writeln('|':5,'| Quick sort |':25,' Bubble sort |', ' Quick sort |',' Bubble sort');
   writeln;
-  for i:=0 to 17 do
+  for i := 0 to 17 do
   begin
     writeln(Res[i].sizeOfArray:4,' |',Res[i].typeOfArray:9, ' |',Res[i].quantityPracticalFirst:12,' |',Res[i].quantityPracticalSecond:11,' |',Res[i].quantityTheoreticalFirst:12,' |', Res[i].quantityTheoreticalSecond:11);
     writeln;

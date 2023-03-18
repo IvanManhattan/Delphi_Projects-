@@ -41,13 +41,13 @@ begin
 
 end;
 
-procedure swapElem(var A, B: Integer);
+procedure swapElem(arr: TArrayOfElements; i, j: Integer);
 var
   temp: Integer;
 begin
-  temp := A;
-  A := B;
-  B := temp;
+  temp := arr[i];
+  arr[i] := arr[j];
+  arr[j] := temp;
 end;
 
 procedure fillArray(var arr: TArrayOfElements);
@@ -67,14 +67,13 @@ var
 
 begin
   i := 0;
-  j := High(toBeReversedArray);
+  j := High(toBeReversedArray) - 1;
 
   while i < j do
   begin
-    swapElem(toBeReversedArray[i], toBeReversedArray[j]);
-    //temp := toBeReversedArray[i];
-    //toBeReversedArray[i] := toBeReversedArray[j];
-    //toBeReversedArray[j] := temp;
+    temp := toBeReversedArray[i];
+    toBeReversedArray[i] := toBeReversedArray[j];
+    toBeReversedArray[j] := temp;
     inc(i);
     dec(j);
   end;
@@ -124,10 +123,9 @@ begin
 
         if i <= j then
         begin
-          //temp := toBeSortedQuick[i];
-          //toBeSortedQuick[i] := toBeSortedQuick[j];
-          //toBeSortedQuick[j] := temp;
-          swapElem(toBeSortedQuick[i], toBeSortedQuick[j]);
+          temp := toBeSortedQuick[i];
+          toBeSortedQuick[i] := toBeSortedQuick[j];
+          toBeSortedQuick[j] := temp;
           inc(i);
           dec(j);
           inc(counterResult);
@@ -165,14 +163,18 @@ begin
       if toBeSortedBubble[j] > toBeSortedBubble[j + 1] then
       begin
         isSorted := false;
-        swapElem(toBeSortedBubble[j], toBeSortedBubble[j + 1]);
+        temp := toBeSortedBubble[j];
+        toBeSortedBubble[j] := toBeSortedBubble[j + 1];
+        toBeSortedBubble[j + 1] := Temp;
       end;
-      inc(counterResult);
     end;
-    //counterResult := counterResult + High(toBeSortedBubble);
-    inc(i);
 
+    inc(i);
+    counterResult := counterResult + High(toBeSortedBubble);
   end;
+
+
+//  counterResult := counterResult * 2;
 
 end;
 

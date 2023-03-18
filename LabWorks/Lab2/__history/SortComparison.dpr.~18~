@@ -41,13 +41,13 @@ begin
 
 end;
 
-procedure swapElem(var A, B: Integer);
+procedure swapElem(arr: TArrayOfElements; i, j: Integer);
 var
   temp: Integer;
 begin
-  temp := A;
-  A := B;
-  B := temp;
+  temp := arr[i];
+  arr[i] := arr[j];
+  arr[j] := temp;
 end;
 
 procedure fillArray(var arr: TArrayOfElements);
@@ -56,7 +56,7 @@ var
   i: Integer;
 begin
   Randomize;
-  for i := Low(arr) to High(arr) do
+  For i := Low(arr) to High(arr) do
     arr[i]:= Random(high(TArrayOfElements)) + 1;
 
 end;
@@ -67,14 +67,13 @@ var
 
 begin
   i := 0;
-  j := High(toBeReversedArray);
+  j := High(toBeReversedArray) - 1;
 
   while i < j do
   begin
-    swapElem(toBeReversedArray[i], toBeReversedArray[j]);
-    //temp := toBeReversedArray[i];
-    //toBeReversedArray[i] := toBeReversedArray[j];
-    //toBeReversedArray[j] := temp;
+    temp := toBeReversedArray[i];
+    toBeReversedArray[i] := toBeReversedArray[j];
+    toBeReversedArray[j] := temp;
     inc(i);
     dec(j);
   end;
@@ -86,6 +85,8 @@ var
   middle: Integer;
   pivotElem: Integer;
   i, j, L, leftElem, rightElem, temp: Integer;
+  comparisonCounter: Integer;
+  arrayToSortQuick: TArrayOfElements;
   stackArr: array of array [0..1] of Integer;
 
 begin
@@ -124,13 +125,11 @@ begin
 
         if i <= j then
         begin
-          //temp := toBeSortedQuick[i];
-          //toBeSortedQuick[i] := toBeSortedQuick[j];
-          //toBeSortedQuick[j] := temp;
-          swapElem(toBeSortedQuick[i], toBeSortedQuick[j]);
+          temp := toBeSortedQuick[i];
+          toBeSortedQuick[i] := toBeSortedQuick[j];
+          toBeSortedQuick[j] := temp;
           inc(i);
           dec(j);
-          inc(counterResult);
         end;
       until i > j;
 
@@ -150,27 +149,23 @@ end;
 
 procedure doBubbleSort(var toBeSortedBubble: TArrayOfElements; var counterResult: Integer);
 var
-  i, j, temp: Integer;
-  isSorted: boolean;
+  i, j, temp, counter: Integer;
 begin
   counterResult := 0;
-  isSorted := false;
-  i := 0;
 
-  while (i <= High(toBeSortedBubble) - 1) and (not isSorted) do
+  for i := 0 to High(toBeSortedBubble) - 1 do
   begin
     for j := 0 to High(toBeSortedBubble) - i - 1 do
     begin
-      isSorted := true;
       if toBeSortedBubble[j] > toBeSortedBubble[j + 1] then
       begin
-        isSorted := false;
-        swapElem(toBeSortedBubble[j], toBeSortedBubble[j + 1]);
+        temp := toBeSortedBubble[j];
+        toBeSortedBubble[j] := toBeSortedBubble[j + 1];
+        toBeSortedBubble[j + 1] := Temp;
+//        swapElem(arrayToSortBubble, j, j + 1);
+         inc(counterResult);
       end;
-      inc(counterResult);
     end;
-    //counterResult := counterResult + High(toBeSortedBubble);
-    inc(i);
 
   end;
 
@@ -208,9 +203,8 @@ for k := 0 to 5 do
 
     Res[k].typeOfArray := 'Unsorted';
 
-    Res[k].quantityTheoreticalFirst := round(Res[k].sizeOfArray * (ln(Res[k].sizeOfArray) /
-                                       ln(2)));
-    Res[k].quantityTheoreticalSecond := round((sqr(Res[k].sizeOfArray) - Res[k].sizeOfArray) div 2);
+    Res[k].quantityTheoreticalFirst := 100;
+    Res[k].quantityTheoreticalSecond := 100;
 
   end;
 
@@ -233,13 +227,10 @@ for k := 0 to 5 do
     doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
     doBubbleSort(arrayBubble, Res[k].quantityPracticalSecond);
 
-//    Res[k].quantityPracticalSecond := Res[k].sizeOfArray - 1;
-
     Res[k].typeOfArray := 'Sorted';
 
-    Res[k].quantityTheoreticalFirst := round(Res[k].sizeOfArray * (ln(Res[k].sizeOfArray) /
-                                       ln(2)));
-    Res[k].quantityTheoreticalSecond := Res[k].sizeOfArray - 1;
+    Res[k].quantityTheoreticalFirst := 100;
+    Res[k].quantityTheoreticalSecond := 100;
   end;
 
 
@@ -254,11 +245,6 @@ for k := 0 to 5 do
     fillArray(arrayQuick);
     fillArray(arrayBubble);
 
-    doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
-    Res[k].quantityPracticalFirst := 0;
-    doBubbleSort(arrayBubble, Res[k].quantityPracticalSecond);
-    Res[k].quantityPracticalSecond := 0;
-
     doReverseArray(arrayQuick);
     doReverseArray(arrayBubble);
 
@@ -267,9 +253,8 @@ for k := 0 to 5 do
 
     Res[k].typeOfArray := 'Inverted';
 
-    Res[k].quantityTheoreticalFirst := round(Res[k].sizeOfArray * (ln(Res[k].sizeOfArray) /
-                                       ln(2)));
-    Res[k].quantityTheoreticalSecond := round((sqr(Res[k].sizeOfArray) - Res[k].sizeOfArray) div 2);
+    Res[k].quantityTheoreticalFirst := 100;
+    Res[k].quantityTheoreticalSecond := 100;
 
   end;
 
@@ -280,7 +265,7 @@ for k := 0 to 5 do
   writeln;
   writeln('|':5,'| Quick sort |':25,' Bubble sort |', ' Quick sort |',' Bubble sort');
   writeln;
-  for i := 0 to 17 do
+  for i:=0 to 17 do
   begin
     writeln(Res[i].sizeOfArray:4,' |',Res[i].typeOfArray:9, ' |',Res[i].quantityPracticalFirst:12,' |',Res[i].quantityPracticalSecond:11,' |',Res[i].quantityTheoreticalFirst:12,' |', Res[i].quantityTheoreticalSecond:11);
     writeln;
