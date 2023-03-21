@@ -18,7 +18,6 @@ var
 const
   FINAL_MESSAGE = 'Press any button to terminate...';
   FILE_DIRECTORY = 'E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\RazmWorks\Razm2\textFile.txt';
-  DONE_MESSAGE = 'Done!';
 
 procedure enterTheString(var S: String);
 begin
@@ -27,23 +26,16 @@ begin
   writeln('Done!');
 end;
 
-procedure cleanString(var S: String);
-begin
-  S := '';
-  writeln(DONE_MESSAGE);
-end;
-
 procedure showInfo();
 begin
   writeln('------------------------------------');
   writeln('"1" - enter the string');
-  writeln('"2" - clean a string buffer');
-  writeln('"3" - code the string');
-  writeln('"4" - decode the string');
-  writeln('"5" - print the result as matrix');
-  writeln('"6" - print the result as string');
-  writeln('"7" - read a file');
-  writeln('"8" - write file');
+  writeln('"2" - code the string');
+  writeln('"3" - decode the string');
+  writeln('"4" - print the result as matrix');
+  writeln('"5" - print the result as string');
+  writeln('"6" - read a file');
+  writeln('"7" - write file');
   writeln('"0" - exit');
   writeln('------------------------------------');
 end;
@@ -54,7 +46,7 @@ var
   Error: Integer;
 begin
   repeat
-    //write('Enter the action you want to execute... ');
+    write('Enter the action you want to execute... ');
     readln(check);
     val(check, Result, Error);
     if (Error <> 0) or (Result <= -1) then
@@ -72,7 +64,7 @@ begin
       write(outputMatrix[i, j]:6);
     writeln;
   end;
-  writeln(DONE_MESSAGE);
+  writeln('Dode!');
 end;
 
 procedure doPrintString(const outputMatrix: TMatrix);
@@ -84,7 +76,7 @@ begin
     for j := 0 to high(outputMatrix) do
       write(outputMatrix[i, j] + ' ');
 
-  writeln(#13#10, DONE_MESSAGE, #13#10);
+  writeln(#13#10, 'Done!', #13#10);
 end;
 
 procedure matrixToString(const matrix: TMatrix; var outputString1: String);
@@ -143,7 +135,7 @@ begin
   closeFile(f);
   
   stringToMatrix(matrix, inputString);
-  writeln(DONE_MESSAGE);
+  writeln('Done!');
 end;
 
 procedure writeFile(var matrix: TMatrix; var outputString: String);
@@ -158,7 +150,7 @@ begin
   writeln(f, outputString);
 
   closeFile(f);
-  writeln(DONE_MESSAGE);
+  writeln('Done!');
 end;
 
 procedure codeString(const S: String; var codedMatrix: TMatrix; var outputString: String);
@@ -176,7 +168,7 @@ begin
   startPoint := 0;
   cycleCounter := 0;
 
-  while k <= length(S) do
+  while k < length(S) do
   begin
     if cycleCounter >= 1 then
       inc(startPoint);
@@ -209,7 +201,7 @@ begin
 
   matrixToString(codedMatrix, outputString);
   
-  writeln(DONE_MESSAGE);
+  writeln('Done!');
 end;
 
 procedure decodeString(var codedMatrix: TMatrix; var S: String);
@@ -261,7 +253,7 @@ begin
 
   stringToMatrix(codedMatrix, S);
   
-  writeln(DONE_MESSAGE);
+  writeln('Done!'); 
 end;
 
 procedure doChoice();
@@ -273,30 +265,24 @@ begin
   repeat
 
     writeln(#13#10, 'Which action you want to execute?');
-    writeln('Enter "9" to get info');
-    //showInfo;
+    showInfo;
     number := checkNumber;
-
 
     case number of
       1:
         enterTheString(inputLine);
       2:
-        cleanString(inputLine);
-      3:
         codeString(inputLine, myMatrix, outputLine);
-      4:
+      3:
         decodeString(myMatrix, inputLine);
-      5:
+      4:
         doPrintMatrix(myMatrix);
-      6:
+      5:
         doPrintString(myMatrix);
-      7:
+      6:
         readFile(myMatrix);
-      8:
+      7:
         writeFile(myMatrix, inputLine);
-      9:
-        showInfo;
       0:
         choice := false;
       else

@@ -1,0 +1,51 @@
+program Lab3;
+
+uses
+  System.SysUtils;
+{$APPTYPE CONSOLE}
+
+{$I toInclude.pas}
+
+begin
+
+// Inputting matrixes
+  writeln('Enter the matrix A: ');
+  initArray(A);
+  writeln('Enter the matrix B: ');
+  initArray(B);
+
+// Outputting the initial matrixes
+  writeln('Matrix A: ');
+  doPrintMatrix(A);
+
+  writeln('Matrix B: ');
+  doPrintMatrix(B);
+
+  writeln('Sum of matrix A and B -  (A + B): ');
+  Temp1 := doSumOrSubOfMatrix(A, B, true);
+  doPrintMatrix(Temp1);
+
+  writeln('Difference of matrix A and B -  (A - B): ');
+  Temp2 := doSumOrSubOfMatrix(A, B, false);
+  doPrintMatrix(Temp2);
+
+  writeln('Multiply of matrix Temp1 and Temp2 -  (A + B) * (A - B): ');
+  Temp3 := doMultiplyMatrix(Temp1, Temp2);
+  doPrintMatrix(Temp3);
+
+  writeln('Multiply of matrix 2 and A -  A * B: ');
+  Temp4 := doMultiplyNum(A, 2);
+  doPrintMatrix(Temp4);
+
+  writeln('Multiply of matrix Temp4 and -  Temp4 * B: ');
+  Temp5 := doMultiplyMatrix(Temp4, B);
+  doPrintMatrix(Temp5);
+
+// Calculating the value of the expression
+  writeln('The end result is  -  2 * A * B - (A + B) * (A - B): ');
+  resultMatrix := doSumOrSubOfMatrix(Temp5, Temp3, false);
+  doPrintMatrix(resultMatrix);
+
+  writeln('Press any key to end...');
+readln;
+end.

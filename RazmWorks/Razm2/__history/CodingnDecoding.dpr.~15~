@@ -54,7 +54,7 @@ var
   Error: Integer;
 begin
   repeat
-    //write('Enter the action you want to execute... ');
+    write('Enter the action you want to execute... ');
     readln(check);
     val(check, Result, Error);
     if (Error <> 0) or (Result <= -1) then
@@ -176,7 +176,7 @@ begin
   startPoint := 0;
   cycleCounter := 0;
 
-  while k <= length(S) do
+  while k < length(S) do
   begin
     if cycleCounter >= 1 then
       inc(startPoint);
@@ -273,10 +273,8 @@ begin
   repeat
 
     writeln(#13#10, 'Which action you want to execute?');
-    writeln('Enter "9" to get info');
-    //showInfo;
+    showInfo;
     number := checkNumber;
-
 
     case number of
       1:
@@ -295,8 +293,6 @@ begin
         readFile(myMatrix);
       8:
         writeFile(myMatrix, inputLine);
-      9:
-        showInfo;
       0:
         choice := false;
       else

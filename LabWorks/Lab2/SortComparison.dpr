@@ -4,9 +4,12 @@ program SortComparison;
 
 {$R *.res}
 
+// Determining the Console Program Type
 uses
   System.SysUtils, Windows;
 
+// Determining the type for record
+// TRes - array of records with output results
 type
   TArrayOfElements = array of Integer;
   TTable = record
@@ -17,18 +20,39 @@ type
     quantityTheoreticalSecond: Integer;
     quantityPracticalSecond: Integer;
   end;
+
   Tres = array[0..17] of TTable;
 
+// Declairing values
+(*
+   i, j, k, l - cycle counters,
+   countOfComparisonQuick, countOfComparisonBubble - number of comparisons,
+   arrayQuick, arrayBubble - arrays to sort,
+   lengthOfArr - inputting length
+   Res - table of results
+*)
 var
   i, j, k, l, countOfComparisonQuick, countOfComparisonBubble: Integer;
   arrayQuick, arrayBubble: TArrayOfElements;
   lengthOfArr: Integer;
   Res: TRes;
 
+// Subprogram for inputting lengths of arrays
+(*
+  User enters the value which will be used as length
+  of arrays. Subprogram check the value. In case of
+  incorrect value it shows appropriate message
+*)
 function initArray: Integer;
+// Variable declaration section
 var
   Error: Integer;
   Check: String;
+(*
+  Error - flag
+  Check - inputting value
+*)
+
 begin
 
   repeat
@@ -41,54 +65,105 @@ begin
 
 end;
 
+
+// Subprogram to swap elements
+(*
+  Take 2 values (A, B), saves the first one in
+  temporary value (temp), change the second one
+  and set the first one a value of temp
+*)
 procedure swapElem(var A, B: Integer);
+// Variable declaration section
 var
   temp: Integer;
+(*
+  temp - temporary value
+*)
+
 begin
   temp := A;
   A := B;
   B := temp;
 end;
 
-procedure fillArray(var arr: TArrayOfElements);
 
+// Subprogram to fill arrays with random values
+(*
+  Take an array and fills it using random values
+  in the range of lowest and highest indexes of
+  array
+*)
+procedure fillArray(var arr: TArrayOfElements);
+// Variable declaration section
 var
   i: Integer;
+(*
+  i - cycle counter
+*)
 begin
   Randomize;
+
+  // Cycle 1.0
+  (*
+    fills array using random values
+  *)
   for i := Low(arr) to High(arr) do
     arr[i]:= Random(high(TArrayOfElements)) + 1;
 
 end;
 
+
+// Subprogram to reverse array
+(*
+  Take the first and the last values of array
+  and swap them. Then the second one and
+  penultimate one and so on
+*)
 procedure doReverseArray(var toBeReversedArray: TArrayOfElements);
+// Variable declaration section
 var
   i, j, temp: Integer;
-
+(*
+  i, j - cycle counters
+*)
 begin
   i := 0;
   j := High(toBeReversedArray);
 
+  // Cycle 1.0
+  (*
+    swaps elements until i > j
+  *)
   while i < j do
   begin
     swapElem(toBeReversedArray[i], toBeReversedArray[j]);
-    //temp := toBeReversedArray[i];
-    //toBeReversedArray[i] := toBeReversedArray[j];
-    //toBeReversedArray[j] := temp;
     inc(i);
     dec(j);
   end;
 
 end;
 
+// Subprogram which sort array using algorithm of QuickSort
+(*
+  Take inputted array, sort it and write down the result of
+  comparisons
+*)
 procedure doQuickSort(var toBeSortedQuick: TArrayOfElements; var counterResult: Integer);
+// Variable declaration section
 var
   middle: Integer;
   pivotElem: Integer;
   i, j, L, leftElem, rightElem, temp: Integer;
   stackArr: array of array [0..1] of Integer;
-
 begin
+(*
+  pivotElem - a separator,
+  i, j, k, L - cycle counters,
+  leftElem, rightElem - temporary values as borders
+  stackArr - stack of borders
+*)
+
+  // setting default values
   counterResult := 0;
   L := 0;
 
@@ -96,44 +171,79 @@ begin
   stackArr[0, 0] := low(toBeSortedQuick);
   stackArr[0, 1] := high(toBeSortedQuick);
 
+  // Cycle 1.0
+  (*
+    Main cycle. It sorts array using quick sort
+    and writes border elements into stack
+  *)
   repeat
 
+    // write border elements into stack
     leftElem := stackArr[L, 0];
     rightElem := stackArr[L, 1];
 
     Dec(L);
 
+    // Cycle 1.1
+    (*
+      Count the pivot element and separate
+      arrays, sets border elements
+    *)
     repeat
+
+      // setting border elements and pivot element
       i := leftELem;
       j := rightElem;
-
       pivotElem := toBeSortedQuick[(leftElem + rightElem) div 2];
 
+      // Cycle 1.1.2
+      (*
+        find needed elements in array and swaps them
+        until i > j
+      *)
       repeat
+
+        // Cycle 1.1.2.1
+        (*
+          find the element that is less than the
+          pivot element
+        *)
         while toBeSortedQuick[i] < pivotElem do
         begin
           inc(i);
           inc(counterResult);
         end;
+        // End of cycle 1.1.2.1
 
+        // Cycle 1.1.2.2
+        (*
+          find the element that is bigger than the
+          pivot element
+        *)
         while toBeSortedQuick[j] > pivotElem do
         begin
           dec(j);
           inc(counterResult);
         end;
+        // End of cycle 1.1.2.2
 
+        // Cycle 1.1.2.3
+        (*
+          swap founded elements if i <= j
+        *)
         if i <= j then
         begin
-          //temp := toBeSortedQuick[i];
-          //toBeSortedQuick[i] := toBeSortedQuick[j];
-          //toBeSortedQuick[j] := temp;
           swapElem(toBeSortedQuick[i], toBeSortedQuick[j]);
           inc(i);
           dec(j);
           inc(counterResult);
         end;
-      until i > j;
+        // End of cycle 1.1.2.3
 
+      until i > j;
+      // End of cycle 1.1.2
+
+      // write down borders into stack
       if i < rightElem then
       begin
         inc(L);
@@ -142,23 +252,46 @@ begin
       end;
       rightElem := j;
     until leftElem >= rightElem;
-
+    // End of cycle 1.1
 
   until L < 0 ;
+  // End of cycle 1.0
 
 end;
 
+
+// Subprogram which sort array using algorithm of Bubble sort
+(*
+  Take inputted array, sort it and write down the result of
+  comparisons
+*)
 procedure doBubbleSort(var toBeSortedBubble: TArrayOfElements; var counterResult: Integer);
+// Variable declaration section
 var
   i, j, temp: Integer;
   isSorted: boolean;
+  (*
+    i, j - cycle counters
+    isSorted - flag
+  *)
 begin
+  // set default values
   counterResult := 0;
   isSorted := false;
   i := 0;
 
+  // Cycle 1.0
+  (*
+    sort array and count number of comparisons
+  *)
   while (i <= High(toBeSortedBubble) - 1) and (not isSorted) do
   begin
+
+    // Cycle 1.1
+    (*
+      check if array is already sorted. If so, end the
+      cycle. In opposite case, sort array
+    *)
     for j := 0 to High(toBeSortedBubble) - i - 1 do
     begin
       isSorted := true;
@@ -169,30 +302,25 @@ begin
       end;
       inc(counterResult);
     end;
-    //counterResult := counterResult + High(toBeSortedBubble);
+    // End of Cycle 1.1
     inc(i);
-
   end;
+  // End of Cycle 1.0
 
 end;
 
-procedure printArray(var inputArray: TArrayOfElements);
-var
-  i: Integer;
-begin
-  for i := 0 to Length(inputArray) - 1 do
-  begin
-    write(IntToStr(inputArray[i]) + ' ');
-  end;
-end;
 
-
-//-------------------------------------------
-
+//---------Start of program---------//
 
 begin
 
-for k := 0 to 5 do
+// Cycle 1.0
+(*
+  Input lengths of arrays, fills arrays and
+  write down results in array of records for
+  'Unsorted' type of arrays
+*)
+  for k := 0 to 5 do
   begin
     Res[k].sizeOfArray := initArray;
 
@@ -200,7 +328,6 @@ for k := 0 to 5 do
     setLength(arrayBubble, Res[k].sizeOfArray);
 
     fillArray(arrayQuick);
-//   arrayBubble := arrayQuick;
     fillArray(arrayBubble);
 
     doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
@@ -213,7 +340,14 @@ for k := 0 to 5 do
     Res[k].quantityTheoreticalSecond := round((sqr(Res[k].sizeOfArray) - Res[k].sizeOfArray) div 2);
 
   end;
+// End of cycle 1.0
 
+// Cycle 2.0
+(*
+  Input lengths of arrays, fills arrays and
+  write down results in array of records for
+  'Sorted' type of arrays
+*)
   for k := 6 to 11 do
   begin
     Res[k].sizeOfArray := Res[k - 6].sizeOfArray;
@@ -225,7 +359,6 @@ for k := 0 to 5 do
     doQuickSort(arrayQuick, Res[k].quantityPracticalFirst);
     Res[k].quantityPracticalFirst := 0;
 
-//    arrayBubble := arrayQuick;
     fillArray(arrayBubble);
     doBubbleSort(arrayBubble, Res[k].quantityPracticalSecond);
     Res[k].quantityPracticalSecond := 0;
@@ -241,9 +374,14 @@ for k := 0 to 5 do
                                        ln(2)));
     Res[k].quantityTheoreticalSecond := Res[k].sizeOfArray - 1;
   end;
+// End of cycle 2.0
 
-
-
+// Cycle 3.0
+(*
+  Input lengths of arrays, fills arrays and
+  write down results in array of records for
+  'Inverted' type of arrays
+*)
   for k := 12 to 17 do
   begin
     Res[k].sizeOfArray := Res[k - 6].sizeOfArray;
@@ -272,7 +410,9 @@ for k := 0 to 5 do
     Res[k].quantityTheoreticalSecond := round((sqr(Res[k].sizeOfArray) - Res[k].sizeOfArray) div 2);
 
   end;
+// End of cycle 3.0
 
+// Output ressults
   writeln;
   writeln('Result table:':36);
   writeln;

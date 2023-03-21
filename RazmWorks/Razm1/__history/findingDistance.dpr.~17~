@@ -11,6 +11,7 @@ type
   TArrayOfCoordinates = array[0..9, 0..1] of Integer;
   TArrayOfX = array of Integer;
   TArrayOfDistances = array of Real;
+  TMatrixOfDistances = array of array of Real;
 
 var
   q: Integer;
@@ -21,6 +22,7 @@ var
 //  arrayOfDistances: TArrayOfDistances;
   distanceOf: Real;
   resultOf: Integer;
+  endingX: Integer;
 
 procedure initArray(var arrayOf: TArrayOfCoordinates);
 var
@@ -38,11 +40,11 @@ begin
         Write('Enter the [' + intToStr(i) + ', ' + intToStr(j) + '] element]: ');
         readln(check);
         val(check, resultOf, flags);
-        if (flags = 1) then
+        if (flags <> 0) then
           writeln('Incorrect input')
         else
           arrayOf[i, j] := strToInt(check);
-      until (flags = 0) and (resultOf > 1);;
+      until (flags = 0);
     end;
   end;
 
@@ -69,8 +71,8 @@ end;
 
 function sortArrayByX(arrayOf: TArrayOfCoordinates): TArrayOfCoordinates;
 var
-  i, j, temp: Integer;
-  arrayToBesorted: TArrayOfCoordinates;
+  i, j, temp, tempY: Integer;
+  arrayToBeSorted: TArrayOfCoordinates;
 begin
   arrayToBesorted := arrayOf;
 
@@ -80,9 +82,15 @@ begin
     begin
       if arrayToBesorted[j, 0] > arrayToBesorted[j + 1, 0] then
       begin
-        temp := arrayToBesorted[j, 0];
-        arrayToBesorted[j, 0] := arrayToBesorted[j + 1, 0];
-        arrayToBesorted[j + 1, 0] := temp;
+        temp := arrayToBeSorted[j, 0];
+        tempY := arrayToBeSorted[j, 1];
+
+        arrayToBeSorted[j, 0] := arrayToBeSorted[j + 1, 0];
+        arrayToBeSorted[j + 1, 0] := temp;
+
+        arrayToBeSorted[j, 1] := arrayToBeSorted[j + 1, 1];
+        arrayToBeSorted[j + 1, 1] := tempY;
+
       end;
       
     end;
@@ -102,87 +110,132 @@ begin
   result := sqrt(sqr(tempX) + sqr(tempY));
 end;
 
-procedure findMaxElem(const arrayOfDistances: TArrayOfDistances; var maxE: Real; var maxI: Integer);
+procedure findMaxElem(const arrayOfDistances: TMatrixOfDistances; const length: Integer; const perI: Integer; var maxE: Real; var maxJ: Integer);
 var
-  i: Integer;
+  i, j: Integer;
+  tempJ: Integer;
+  tempE, nextE: Real;
 begin
+  i := perI;
+  j := 0;
+  tempE := 0;
+  tempJ := j;
 
-  for i := 0 to high(arrayOfDistances) - 1 do
+  for j := 0 to length - 1 do
   begin
-    if arrayOfDistances[i] < arrayOfDistances[i + 1] then
+  nextE := arrayOfDistances[i, j];
+    if tempE < nextE then
     begin
-      maxE := arrayOfDistances[i + 1];
-      maxI := i;
+      tempE := nextE;
+      tempJ := j;
     end;
   end;
 
+  maxE :=  tempE;
+  maxJ := tempJ;
+
 end;
 
-procedure findMinElem(const arrayOfDistances: TArrayOfDistances; var minE: Real; var minI: Integer);
+procedure findMinElem(const arrayOfHighest: TArrayOfDistances; var minE: Real; var minI: Integer);
 var
-  i: Integer;
+  j: Integer;
+  tempJ: Integer;
+  tempE, nextE: Real;
 begin
 
-  for i := 0 to high(arrayOfDistances) - 1 do
+  tempE := arrayOfHighest[0];
+
+  for j := 1 to high(arrayOfHighest) - 1 do
   begin
-    if arrayOfDistances[i] > arrayOfDistances[i + 1] then
+    if tempE > arrayOfHighest[j] then
     begin
-      minE := arrayOfDistances[i + 1];
-      minI := i;
+      tempE := arrayOfHighest[j];
+      tempJ := j;
     end;
+
   end;
+
+  minE := tempE;
+  minI := tempJ;
 
 end;
 
-procedure findElem(const arrayOFDistances: TArrayOfDistances; const elem: Real; var elemI: Integer);
+procedure findElem(const arrayOfDistances: TMatrixOfDistances; const length: Integer; const elem: Real; var elemIX: Integer);
 var
   i: Integer;
+  j: Integer;
+  tempI: Integer;
+  isFound: boolean;
 begin
 
-  for i := 0 to high(arrayOfDistances) - 1 do
-  begin
-    if elem = arrayOFDistances[i] then
-      elemI := i;
-  end;
+  isFound := false;
+  i := 0;
+  j := 0;
+
+    repeat
+      if arrayOfDistances[i, j] = elem then
+      begin
+        tempI := j;
+        isFound := true;
+      end
+      else
+      begin
+        j := j + 1;
+        if j = length - 1 then
+        begin
+          j := 0;
+          i := i + 1;
+        end;
+      end;
+    until (i > 9) or (isFound = true);
+
+  elemIX := tempI;
+
 end;
 
-function readingDistance(const arrayOf: TArrayOfCoordinates): TArrayOfDistances;
+function readingDistance(const arrayOf: TArrayOfCoordinates): Integer;
 var
   i, j, k, length, nullX, maxI, minI, needI: Integer;
   testArray, testArraySorted: TArrayOfCoordinates;
   arrayOfX: TArrayOfX;
-  arrayOfDistances, arrayOfHighest: TArrayOfDistances;
+  arrayOfHighest: TArrayOfDistances;
+  arrayOfDistances: TMatrixOfDistances;
   distanceIs: Real;
-  maxE, minE, needE: Real;
+  maxE, minE: Real;
+  needE: Integer;
+
+const
+  ROWS = 9;
 
 begin
   k := 0;
   nullX := 0;
+  maxE := 0;
+  maxI := 0;
   testArray := arrayOf;
   testArraySorted := sortArrayByX(testArray);
 
-//  length := testArraySorted[high(testArraySorted) - 1, 0] - testArraySorted[low(testArraySorted), 0];
   length := testArraySorted[9, 0] - testArraySorted[0, 0];
   setLength(arrayOfX, length);
-  setLength(arrayOfDistances, length);
+  setLength(arrayOfDistances, 10, length);
   setLength(arrayOfHighest, 10);
   arrayOfX[0] := testArraySorted[0, 0];
-  arrayOfX[High(arrayOfX)] := testArraySorted[high(testArraySorted), 0]; // !
+  arrayOfX[High(arrayOfX)] := testArraySorted[high(testArraySorted), 0];
 
   for i := 1 to high(arrayOfX) do
   begin
     arrayOfX[i] := arrayOFx[0] + i;
   end;
 
-  while k < 10 do
+  while k < ROWS do
   begin
-    for i := 0 to 9 do
+    for i := 0 to ROWS do
     begin
-      for j := 0 to high(arrayOfDistances) - 1 do
-      begin   // сделать двумерный массив, в который будут записаны значения
-        arrayOfDistances[j] := findDistance(arrayOfX[j], testArraySorted[i, 0], nullX, testArraySorted[i, 1]);
-      end;    // сделать двумерный массив, в который будут записаны значения
-      findMaxElem(arrayOfDistances, maxE, maxI);
+      for j := 0 to length - 1 do
+      begin
+        arrayOfDistances[i, j] := findDistance(arrayOfX[j], testArraySorted[i, 0], nullX, testArraySorted[i, 1]);
+      end;
+      findMaxElem(arrayOfDistances, length, i, maxE, maxI);
       arrayOfHighest[k] := maxE;
       k := k + 1;
     end;
@@ -190,13 +243,10 @@ begin
   end;
 
   findMinElem(arrayOfHighest, minE, minI);
-
-  findElem(arrayOfDistances, minE, needI);
-
+  findElem(arrayOfDistances, length, minE, needI);
   needE := arrayOfX[needI];
 
-
-  result := arrayOfDistances;
+  result := needE;
 
 end;
 
@@ -208,12 +258,16 @@ begin
 //  sortedArrayOfCoorfinates := sortArrayByX(arrayOfCoordinates);
 //  printArray(sortedArrayOfCoorfinates);
 
+//  initArray(arrayOfCoordinates);
+//  arrayOfDistances := readingDistance(arrayOfCoordinates);
+
+//  for q := 0 to High(arrayOfDistances) - 1 do
+//    write(arrayOfDistances[q]:7:2);
+
   initArray(arrayOfCoordinates);
-  arrayOfDistances := readingDistance(arrayOfCoordinates);
-
-  for q := 0 to High(arrayOfDistances) - 1 do
-    write(arrayOfDistances[q]:7:2);
-
+  endingX := readingDistance(arrayOfCoordinates);
+  writeln;
+  writeln('The result is: ' + intToStr(endingX));
 
 readln;
 end.

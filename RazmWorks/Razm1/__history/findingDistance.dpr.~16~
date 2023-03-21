@@ -14,17 +14,15 @@ type
   TMatrixOfDistances = array of array of Real;
 
 var
-//  q: Integer;
+  q: Integer;
   arrayOfCoordinates: TArrayOfCoordinates;
-//  sortedArrayOfCoorfinates: TArrayOfCoordinates;
-//  arrayOfX: TArrayOfX;
+  sortedArrayOfCoorfinates: TArrayOfCoordinates;
+  arrayOfX: TArrayOfX;
+  arrayOfDistances: TArrayOfDistances;
 //  arrayOfDistances: TArrayOfDistances;
-//  arrayOfDistances: TArrayOfDistances;
-//  distanceOf: Real;
-  resultOf: Integer;
-//  endingX: Integer;
-  xCoord, accuracyOf: Integer;
   distanceOf: Real;
+  resultOf: Integer;
+  endingX: Integer;
 
 procedure initArray(var arrayOf: TArrayOfCoordinates);
 var
@@ -46,26 +44,10 @@ begin
           writeln('Incorrect input')
         else
           arrayOf[i, j] := strToInt(check);
-      until (flags = 0);
+      until (flags = 0) and (resultOf > 1);;
     end;
   end;
 
-end;
-
-procedure initAccuracy(var accuracy: Integer);
-var
-  check: String;
-  flags: Integer;
-begin
-  repeat
-    Write('Enter an accuracy...');
-    readln(check);
-    val(check, accuracy, flags);
-    if (flags <> 0) then
-      writeln('Incorrect input')
-    else
-      accuracy := strToInt(check);
-  until (flags = 0) and (accuracy >= 1);
 end;
 
 procedure printArray(const arrayOf: TArrayOfCoordinates);
@@ -89,8 +71,8 @@ end;
 
 function sortArrayByX(arrayOf: TArrayOfCoordinates): TArrayOfCoordinates;
 var
-  i, j, temp, tempY: Integer;
-  arrayToBeSorted: TArrayOfCoordinates;
+  i, j, temp: Integer;
+  arrayToBesorted: TArrayOfCoordinates;
 begin
   arrayToBesorted := arrayOf;
 
@@ -100,15 +82,9 @@ begin
     begin
       if arrayToBesorted[j, 0] > arrayToBesorted[j + 1, 0] then
       begin
-        temp := arrayToBeSorted[j, 0];
-        tempY := arrayToBeSorted[j, 1];
-
-        arrayToBeSorted[j, 0] := arrayToBeSorted[j + 1, 0];
-        arrayToBeSorted[j + 1, 0] := temp;
-
-        arrayToBeSorted[j, 1] := arrayToBeSorted[j + 1, 1];
-        arrayToBeSorted[j + 1, 1] := tempY;
-
+        temp := arrayToBesorted[j, 0];
+        arrayToBesorted[j, 0] := arrayToBesorted[j + 1, 0];
+        arrayToBesorted[j + 1, 0] := temp;
       end;
       
     end;
@@ -185,7 +161,7 @@ var
   tempI: Integer;
   isFound: boolean;
 begin
-  tempI := 0;
+
   isFound := false;
   i := 0;
   j := 0;
@@ -199,7 +175,7 @@ begin
       else
       begin
         j := j + 1;
-        if j = length then
+        if j = length - 1 then
         begin
           j := 0;
           i := i + 1;
@@ -211,7 +187,7 @@ begin
 
 end;
 
-procedure readingDistance(const arrayOf: TArrayOfCoordinates; var xC: Integer; var dist: Real; const accuracy: Integer);
+function readingDistance(const arrayOf: TArrayOfCoordinates): Integer;
 var
   i, j, k, length, nullX, maxI, minI, needI: Integer;
   testArray, testArraySorted: TArrayOfCoordinates;
@@ -264,10 +240,9 @@ begin
   findElem(arrayOfDistances, length, minE, needI);
   needE := arrayOfX[needI];
 
-//  result := needE;
-  xC := needE;
+  result := needE;
+//  result := arrayOfDistances;
 
-  dist := roundTo(minE, -accuracy);
 end;
 
 
@@ -285,14 +260,8 @@ begin
 //    write(arrayOfDistances[q]:7:2);
 
   initArray(arrayOfCoordinates);
-//  endingX := readingDistance(arrayOfCoordinates);
-  initAccuracy(accuracyOf);
-  readingDistance(arrayOfCoordinates, xCoord, distanceOf, accuracyOf);
-  writeln;
-
-
-  writeln('The result is: ' + intToStr(xCoord));
-  writeln('The distance is: ' + floatToStr(distanceOf));
+  endingX := readingDistance(arrayOfCoordinates);
+  writeln(endingX);
 
 readln;
 end.
