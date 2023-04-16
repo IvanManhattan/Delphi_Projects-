@@ -1,0 +1,53 @@
+unit Unit1;
+
+interface
+
+type
+  TDish = class
+    private
+      DishName: String;
+      DishCategory: String;
+      DishPrice: Integer;
+    public
+      function getDishName(): String;
+      function getDishCategory(): String;
+      function getDishPrice(): Integer;
+      procedure setDishName(const DishName: String);
+      procedure setDishCategory(const DishCategory: String);
+      procedure setDishPrice(const DishPrice: Integer);
+  end;
+
+implementation
+
+  function TDish.getDishName(): String;
+  begin
+    result := DishName;
+  end;
+
+  function TDish.getDishCategory(): String;
+  begin
+    result := DishCategory;
+  end;
+
+  function TDish.getDishPrice(): Integer;
+  begin
+    result := DishPrice;
+  end;
+
+  procedure TDish.setDishName(const DishName: String);
+  begin
+    self.DishName := DishName;
+  end;
+
+  procedure TDish.setDishCategory(const DishCategory: String);
+  begin
+    self.DishCategory := DishCategory;
+  end;
+
+  procedure TDish.setDishPrice(const DishPrice: Integer);
+  begin
+    self.DishPrice := DishPrice;
+  end;
+
+
+end.

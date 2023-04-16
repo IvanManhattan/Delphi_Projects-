@@ -1,0 +1,123 @@
+program Lab11;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils;
+
+type
+  TExpression = function(x: Double): Double;
+
+var
+  exp: TExpression;
+  myResult: Double;
+
+function byLeftRecktangle(rightBorder, leftBorder: Double; const eps: Double;
+                          inputFunction: TExpression): Double;
+var
+  square: Double;
+  step: Double;
+  border: Double;
+  n: Integer;
+
+begin
+
+  step := rightBorder - leftBorder;
+  result := inputFunction(leftBorder) * step;
+  n := 1;
+
+  repeat
+    square := result;
+    n := n * 2;
+    step := (rightBorder - leftBorder) / n;
+    border := leftBorder;
+    result := 0;
+
+    while border < rightBorder do
+    begin
+      result := result + inputFunction(border) * step;
+      border := border + step;
+    end;
+
+  until abs(square - result) <= eps;
+
+end;
+
+function byRightRecktangle(rightBorder, leftBorder: Double; const eps: Double;
+                          const inputFunction: TExpression): Double;
+var
+  square: Double;
+  step: Double;
+  border: Double;
+  n: Integer;
+
+begin
+  step := rightBorder - leftBorder;
+  result := inputFunction(rightBorder) * step;
+  n := 1;
+
+  repeat
+    square := result;
+    n := n * 2;
+    step := (rightBorder - leftBorder) / n;
+    border := rightBorder;
+    result := 0;
+
+    while leftBorder < border do
+    begin
+      result := result + inputFunction(border) * step;
+      border := border - step;
+    end;
+
+  until abs(square - result) <= eps;
+
+end;
+
+function byCentralRecktangle(rightBorder, leftBorder: Double; const eps: Double;
+                          const inputFunction: TExpression): Double;
+var
+  square: Double;
+  step: Double;
+  border: Double;
+  n: Integer;
+  central: Double;
+
+begin
+
+  step := rightBorder - leftBorder;
+  central := leftBorder + step / 2;
+  result := inputFunction(central) * step;
+  n := 1;
+
+  repeat
+    square := result;
+    n := n * 2;
+    step := (rightBorder - leftBorder) / n;
+    border := leftBorder + step / 2;
+    result := 0;
+
+    while border < rightBorder do
+    begin
+      result := result + inputFunction(border) * step;
+      border := border + step;
+    end;
+
+  until abs(square - result) <= eps;
+
+end;
+
+function expressionOne(x: Double): Double;
+begin
+  result := (sqrt(0.7 * sqr(x) + 2.3)) / (3.2 + sqrt(0.8 * x + 1.4));
+end;
+
+begin
+
+  exp := expressionOne;
+  myResult := byLeftRecktangle(1.9, 0.5, 0.01, exp);
+  writeln(floatToStr(myResult));
+
+readln;
+end.

@@ -12,13 +12,6 @@ type
 // Declaring the initial matrixes used in the expression
 // Tepm1, Temp2, Temp3, Temp4, Temp5 - intemideate results
 // resultMatrix - result of expression
-// Declaring methods
-// initArray - initialization of array. Void
-// doSumOrSubOfMatrix - calculates sum or sub of matrix
-// according to flag. Returns matrix
-// doMultiply - multiplies matrixes. Return matrix
-// doMultiplyNum - multiplies matrix with num. Returns matrix
-// doPrintMatrix - print matrix. Void
 var
   A: TMatrix;
   B: TMatrix;

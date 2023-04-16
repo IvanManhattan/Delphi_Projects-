@@ -1,0 +1,37 @@
+unit Objects;
+
+interface
+
+type Person = Class
+  private
+    name: String;
+    id: Integer;
+
+  published
+    constructor createPerson(name: String; id: Integer);
+    function getName: String;
+    function getId: Integer;
+End;
+
+
+
+implementation
+
+  function Person.getName: String;
+  begin
+    result := name;
+  end;
+
+  function Person.getId: Integer;
+  begin
+    result := id;
+  end;
+
+  constructor Person.createPerson(name: string; id: Integer);
+  begin
+    self.name := name;
+    self.id := id;
+  end;
+
+
+end.

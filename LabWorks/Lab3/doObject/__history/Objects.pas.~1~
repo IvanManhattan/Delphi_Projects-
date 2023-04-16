@@ -1,0 +1,30 @@
+unit Objects;
+
+interface
+
+type Person = Class
+  private
+    name: String;
+    id: Integer;
+
+  published
+    function getName: String;
+    function getId: Integer;
+End;
+
+
+implementation
+
+  function Person.getName: String;
+  begin
+    result := name;
+  end;
+
+  function Person.getId: Integer;
+  begin
+    result := id;
+  end;
+
+
+
+end.

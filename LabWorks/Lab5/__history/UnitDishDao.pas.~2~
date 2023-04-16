@@ -1,0 +1,21 @@
+unit UnitDishDao;
+
+interface
+
+type
+  TDishDAO = class
+    private
+      ID: String;
+    public
+      procedure addNewDish();
+  end;
+
+implementation
+
+  procedure addNewDish();
+  var
+    ID: Integer;
+  begin
+
+  end;
+end.

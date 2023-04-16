@@ -1,0 +1,236 @@
+program Lab11;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils;
+
+const
+  NUMBER_OF_EXPRESSIONS = 4;
+  NUMBER_OF_METHODS = 4;
+  arrayOfBorders: array[1..NUMBER_OF_EXPRESSIONS] of array[1..2] of Double =
+                    ((1.9, 0.5), (2.2, 1.6), (1.2, 0.4), (1.6, 0.8));
+
+type
+
+  TExpression = function(x: Double): Double;
+  TTable = record
+
+    resultByLeft: Double;
+    resultByRight: Double;
+    resultByCentral: Double;
+    resultByTrapes: Double;
+
+  end;
+  TResult = array[1..NUMBER_OF_METHODS] of TTable;
+  TListOfExpressions = array[1..NUMBER_OF_EXPRESSIONS] of TExpression;
+
+var
+  exp: TExpression;
+  myResult: Double;
+  left, right: Double;
+  i, k: Integer;
+  resultTable: TResult;
+  listOfExpressions: TListOfExpressions;
+
+function byLeftRecktangle(rightBorder, leftBorder: Double; const eps: Double;
+                          inputFunction: TExpression): Double;
+var
+  square: Double;
+  step: Double;
+  border: Double;
+  n: Integer;
+
+begin
+
+  step := rightBorder - leftBorder;
+  result := inputFunction(leftBorder) * step;
+  n := 1;
+
+  repeat
+    square := result;
+    n := n * 2;
+    step := (rightBorder - leftBorder) / n;
+    border := leftBorder;
+    result := 0;
+
+    while border < rightBorder do
+    begin
+      result := result + inputFunction(border) * step;
+      border := border + step;
+    end;
+
+  until abs(square - result) <= eps;
+
+end;
+
+function byRightRecktangle(rightBorder, leftBorder: Double; const eps: Double;
+                          const inputFunction: TExpression): Double;
+var
+  square: Double;
+  step: Double;
+  border: Double;
+  n: Integer;
+
+begin
+  step := rightBorder - leftBorder;
+  result := inputFunction(rightBorder) * step;
+  n := 1;
+
+  repeat
+    square := result;
+    n := n * 2;
+    step := (rightBorder - leftBorder) / n;
+    border := rightBorder;
+    result := 0;
+
+    while leftBorder < border do
+    begin
+      result := result + inputFunction(border) * step;
+      border := border - step;
+    end;
+
+  until abs(square - result) <= eps;
+
+end;
+
+function byCentralRecktangle(rightBorder, leftBorder: Double; const eps: Double;
+                          const inputFunction: TExpression): Double;
+var
+  square: Double;
+  step: Double;
+  border: Double;
+  n: Integer;
+  central: Double;
+
+begin
+
+  step := rightBorder - leftBorder;
+  central := leftBorder + step / 2;
+  result := inputFunction(central) * step;
+  n := 1;
+
+  repeat
+    square := result;
+    n := n * 2;
+    step := (rightBorder - leftBorder) / n;
+    border := leftBorder + step / 2;
+    result := 0;
+
+    while border < rightBorder do
+    begin
+      result := result + inputFunction(border) * step;
+      border := border + step;
+    end;
+
+  until abs(square - result) <= eps;
+
+end;
+
+function byTrapes(rightBorder, leftBorder: Double; const eps: Double;
+                          const inputFunction: TExpression): Double;
+var
+  square: Double;
+  step: Double;
+  borderA, borderB: Double;
+  n: Integer;
+
+begin
+
+  step := rightBorder - leftBorder;
+  result := ((inputFunction(rightBorder) + inputFunction(leftBorder)) / 2) * step;
+  n := 1;
+
+  repeat
+    square := result;
+    n := n * 2;
+    step := (rightBorder - leftBorder) / n;
+    borderA := leftBorder;
+    borderB := leftBorder + step;
+    result := 0;
+
+    while borderA < rightBorder do
+    begin
+      result := result + ((inputFunction(borderB) + inputFunction(borderA)) / 2) * step;
+      borderA := borderA + step;
+      borderB := borderB + step;
+    end;
+
+  until abs(square - result) <= eps;
+
+end;
+
+
+function expressionOne(x: Double): Double;
+begin
+  result := (sqrt(0.7 * sqr(x) + 2.3)) / (3.2 + sqrt(0.8 * x + 1.4));
+end;
+
+function expressionTwo(x: Double): Double;
+begin
+  result := 1 / (sqrt(sqr(x) + 2.5));
+end;
+
+function expressionThree(x: Double): Double;
+begin
+  result := (cos(0.4 * x + 0.6)) / (0.8 + sqr(sin(x + 0.5)));
+end;
+
+function expressionFour(x: Double): Double;
+begin
+  result := (sqr(x) + 1) * sin(x - 0.5);
+end;
+
+begin
+
+(*  exp := expressionOne;
+  myResult := byLeftRecktangle(1.9, 0.5, 0.001, exp);
+  writeln(floatToStr(myResult));
+
+  myResult := byRightRecktangle(1.9, 0.5, 0.01, exp);
+  writeln(floatToStr(myResult));
+
+  myResult := byCentralRecktangle(1.9, 0.5, 0.01, exp);
+  writeln(floatToStr(myResult));
+
+  myResult := byTrapes(1.9, 0.5, 0.01, exp);
+  writeln(floatToStr(myResult));
+*)
+
+  listOfExpressions[1] := expressionOne;
+  listOfExpressions[2] := expressionTwo;
+  listOfExpressions[3] := expressionThree;
+  listOfExpressions[4] := expressionFour;
+
+
+  for k := 1 to 4 do
+  begin
+    exp := listOfExpressions[k];
+    left := arrayOfBorders[k, 1];
+    right := arrayOfBorders[k, 2];
+
+    resultTable[k].resultByLeft := byLeftRecktangle(
+                                left, right, 0.001, exp);
+    resultTable[k].resultByRight := byRightRecktangle(
+                                left, right, 0.001, exp);
+    resultTable[k].resultByCentral := byCentralRecktangle(
+                                left, right, 0.001, exp);
+    resultTable[k].resultByTrapes := byTrapes(
+                                left, right, 0.001, exp);
+  end;
+
+  for k := 1 to 4 do
+  begin
+    writeln(floatToStr(resultTable[k].resultByLeft));
+    writeln(floatToStr(resultTable[k].resultByRight));
+    writeln(floatToStr(resultTable[k].resultByCentral));
+    writeln(floatToStr(resultTable[k].resultByTrapes));
+    writeln;
+  end;
+
+//  writeln(floatToStr(resultTable[1].resultByLeft));
+
+readln;
+end.
