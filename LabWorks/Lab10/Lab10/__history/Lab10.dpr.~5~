@@ -1,0 +1,143 @@
+program Lab10;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils;
+
+type
+  TMyString = array of String;
+  TMyInteger = array of Integer;
+
+var
+  myFile: TextFile;
+
+const
+  FINAL_MESSAGE = 'Press any button to terminate...';
+  FILE_PATH = 'E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Lab10\MyTextFile.txt';
+
+procedure showInfo();
+begin
+  writeln('------------------------------------');
+  writeln('"2" - read file');
+  writeln('"3" - ');
+  writeln('"4" - ');
+  writeln('"5" - ');
+  writeln('"6" - ');
+  writeln('"7" - ');
+  writeln('"8" - ');
+  writeln('"0" - terminate program');
+  writeln('------------------------------------');
+end;
+
+function checkNumber: Integer;
+var
+  check: String;
+  Error: Integer;
+begin
+  repeat
+    //write('Enter the action you want to execute... ');
+    readln(check);
+    val(check, Result, Error);
+    if (Error <> 0) or (Result <= -1) then
+      writeln('Incorrect input. Try again', #13#10);
+  until (Error = 0) and (Result > -1);
+end;
+
+procedure doPrintString(const arrayOfString: TMyString);
+var
+  i: Integer;
+begin
+  for i := 0 to high(arrayOfString) do
+    writeln(arrayOfString[i]);
+end;
+
+procedure doFindLength(const arrayOfString: TMyString; var arrayOfLength: TMyInteger);
+var
+  i: Integer;
+begin
+
+  setLength(arrayOfLength, length(arrayOfString));
+  for i := 0 to high(arrayOfString) do
+  begin
+
+  end;
+
+end;
+
+procedure doReadFile(var myFile: TextFile);
+var
+  inputString: String;
+  arrayOfString: TMyString;
+  myChar: Char;
+  futurLength: Integer;
+  i: Integer;
+
+begin
+  futurLength := 0;
+  assignFile(myFile, FILE_PATH);
+  reset(myFile);
+  setLength(arrayOfString, 6);
+
+  //check the file procedure where find length for array
+  while not EoF(myFile) do
+  begin
+    while not EoLn(myFile) do
+    begin
+      read(myFile, myChar);
+      inputString := inputString + myChar;
+    end;
+    arrayOfString[futurLength] := inputString;
+    inc(futurLength);
+    inputString := '';
+    readln(myFile);
+  end;
+
+  doPrintString(arrayOfString);
+  writeln('Done!');
+
+  closeFile(myFile);
+
+end;
+
+procedure findMinString();
+begin
+
+end;
+
+procedure doChoice();
+var
+  number: Integer;
+  choice: Boolean;
+
+begin
+  choice := true;
+  repeat
+
+    writeln(#13#10, 'Which action you want to execute?');
+    writeln('Enter "1" to get info');
+    number := checkNumber;
+
+    case number of
+      0:
+        choice := false;
+      1:
+        showInfo();
+      2:
+        doReadFile(myFile);
+      else
+        writeln(intToStr(number) + ' is incorrect input. Try again');
+    end;
+
+  until choice = false;
+end;
+
+begin
+
+  doChoice;
+  writeln(FINAL_MESSAGE);
+
+readln;
+end.

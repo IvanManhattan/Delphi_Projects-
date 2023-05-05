@@ -1,0 +1,64 @@
+unit UnitDishDAO;
+
+interface
+
+uses
+  UnitDish;
+
+type
+  PLinkedList = ^TLinkedList;
+  TLinkedList = record
+    dish: TDish;
+    next: PLinkedList;
+    prev: PLinkedList;
+  end;
+
+  TDishDAO = class
+    private
+      constructor actualCreate;
+    public
+      class function getInstance: TDishDAO;
+//      constructor Create;
+      procedure addNewDish(const newDish: TDish);
+      function getListOfDishes: PLinkedList;
+  end;
+
+
+
+implementation
+
+var
+  DAO: TDishDAO;
+  first: PLinkedList;
+
+  constructor TDishDAO.actualCreate;
+  begin
+    inherited Create;
+  end;
+
+  class function TDishDAO.getInstance: TDishDAO;
+  begin
+    if DAO = nil then
+      DAO := TDishDAO.actualCreate;
+    Result := DAO;
+  end;
+
+
+  procedure TDishDAO.addNewDish(const newDish: TDish);
+  var
+    pointerOne, pointerTwo: PLinkedList;
+  begin
+
+    new(pointerOne);
+    pointerOne^.dish := newDish;
+    new(pointerOne^.next);
+    pointerOne := pointerOne^.next;
+
+  end;
+
+  function TDishDAO.getListOfDishes(): PLinkedList;
+  begin
+    result := first;
+  end;
+
+end.

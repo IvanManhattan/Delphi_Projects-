@@ -1,1 +1,0 @@
-Retaraunt app on Delphi 

@@ -1,0 +1,189 @@
+program ProjectSets;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils;
+
+const
+  setOfMuteCons: set of Char = ['ê', 'ï', 'ñ', 'ò', 'ô', 'õ', 'ö', '÷', 'ø', 'ù'];
+  setOfLetts: set of Char = ['à'..'ÿ'];
+  ENTER_MESSAGE = 'Enter the string';
+  ERROR_MESSAGE = 'Wrong input. Try again';
+  FINAL_MESSAGE = 'Enter any button to terminate...';
+
+var
+  inputString: String;
+  gottenString: String;
+  readyString: String;
+
+procedure checkString(var inputString: String);
+var
+  flags: Boolean;
+  i: Integer;
+
+begin
+  writeln(ENTER_MESSAGE);
+  readln(inputString);
+
+end;
+
+function findLetts(const inputString: String): String;
+var
+  i: Integer;
+begin
+
+  for i := 1 to length(inputString) do
+  begin
+    if inputString[i] in setOfMuteCons then
+      result := result + inputString[i];
+
+  end;
+
+end;
+
+// Subprogram to swap elements
+(*
+  Take 2 values (A, B), saves the first one in
+  temporary value (temp), change the second one
+  and set the first one a value of temp
+*)
+procedure swapElem(var A, B: Char);
+// Variable declaration section
+var
+  temp: Char;
+(*
+  temp - temporary value
+*)
+
+begin
+  temp := A;
+  A := B;
+  B := temp;
+end;
+
+procedure sortString(var inputString: String);
+var
+  i, j, L, leftElem, rightElem, temp: Integer;
+  middle: Integer;
+  pivotElem: Char;
+  stackArr: array of array [0..1] of Integer;
+
+begin
+
+(*
+  pivotElem - a separator,
+  i, j, k, L - cycle counters,
+  leftElem, rightElem - temporary values as borders
+  stackArr - stack of borders
+*)
+
+  // setting default values
+  L := 0;
+
+  setLength(stackArr, high(inputString));
+  stackArr[0, 0] := 1;
+  stackArr[0, 1] := length(inputString);
+
+  // Cycle 1.0
+  (*
+    Main cycle. It sorts array using quick sort
+    and writes border elements into stack
+  *)
+  repeat
+
+    // write border elements into stack
+    leftElem := stackArr[L, 0];
+    rightElem := stackArr[L, 1];
+
+    Dec(L);
+
+    // Cycle 1.1
+    (*
+      Count the pivot element and separate
+      arrays, sets border elements
+    *)
+    repeat
+
+      // setting border elements and pivot element
+      i := leftELem;
+      j := rightElem;
+      pivotElem := inputString[(leftElem + rightElem) div 2];
+
+      // Cycle 1.1.2
+      (*
+        find needed elements in array and swaps them
+        until i > j
+      *)
+      repeat
+
+        // Cycle 1.1.2.1
+        (*
+          find the element that is less than the
+          pivot element
+        *)
+        while inputString[i] < pivotElem do
+        begin
+          inc(i);
+
+        end;
+        // End of cycle 1.1.2.1
+
+        // Cycle 1.1.2.2
+        (*
+          find the element that is bigger than the
+          pivot element
+        *)
+        while inputString[j] > pivotElem do
+        begin
+          dec(j);
+
+        end;
+        // End of cycle 1.1.2.2
+
+        // Cycle 1.1.2.3
+        (*
+          swap founded elements if i <= j
+        *)
+        if i <= j then
+        begin
+          swapElem(inputString[i], inputString[j]);
+          inc(i);
+          dec(j);
+
+        end;
+        // End of cycle 1.1.2.3
+
+      until i > j;
+      // End of cycle 1.1.2
+
+      // write down borders into stack
+      if i < rightElem then
+      begin
+        inc(L);
+        StackArr[L, 0] := i;
+        StackArr[L, 1] := rightElem;
+      end;
+      rightElem := j;
+    until leftElem >= rightElem;
+    // End of cycle 1.1
+
+  until L < 0 ;
+  // End of cycle 1.0
+
+end;
+
+
+
+begin
+
+  checkString(inputString);
+  gottenString := findLetts(inputString);
+  sortString(inputString);
+  writeln(inputString);
+
+  writeln(FINAL_MESSAGE);
+readln;
+end.

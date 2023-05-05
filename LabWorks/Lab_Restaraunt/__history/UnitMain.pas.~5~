@@ -1,0 +1,56 @@
+unit UnitMain;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UnitDish, UnitDishDAO, Vcl.ExtCtrls,
+  Vcl.StdCtrls;
+
+type
+  TFormMain = class(TForm)
+    PanelShow: TPanel;
+    PanelAction: TPanel;
+    ListBoxAllDishes: TListBox;
+    ButtonShow: TButton;
+    PanelEditFields: TPanel;
+    EditDishName: TEdit;
+    EditDishCategory: TEdit;
+    EditDishPrice: TEdit;
+    ButtonAdd: TButton;
+    procedure ButtonAddClick(Sender: TObject);
+    procedure ButtonShowClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormMain: TFormMain;
+
+implementation
+
+{$R *.dfm}
+  var
+    dish: TDish;
+    dishDAO: TDishDAO;
+
+    
+  procedure TFormMain.ButtonAddClick(Sender: TObject);  
+  begin
+    dish := TDish.CreateDish(EditDishName.Text, EditDishCategory.Text, strToInt(EditDishPrice.Text));
+    dishDAO := TDishDAO.getInstance;
+    dishDAO.addNewDish(dish);	
+  end;
+
+  procedure TFormMain.ButtonShowClick(Sender: TObject);
+  var
+    myDish: TDish;
+  begin
+    dishDAO := TDishDAO.getInstance;
+    myDish := dishDAO.getItemFromListOfDishes(0);	
+    ListBoxAllDishes.items.Add(myDish.getDishName);	  
+  end;
+
+end.

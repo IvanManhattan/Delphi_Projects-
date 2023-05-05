@@ -1,0 +1,107 @@
+program Lab10;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils;
+
+type
+  TMyString = array of String;
+
+var
+  myFile: TextFile;
+
+const
+  FINAL_MESSAGE = 'Press any button to terminate...';
+  FILE_PATH = 'E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Lab10\MyTextFile.txt';
+
+procedure showInfo();
+begin
+  writeln('------------------------------------');
+  writeln('"1" - enter the string');
+  writeln('"2" - clean a string buffer');
+  writeln('"3" - code the string');
+  writeln('"4" - decode the string');
+  writeln('"5" - print the result as matrix');
+  writeln('"6" - print the result as string');
+  writeln('"7" - read a file');
+  writeln('"8" - write file');
+  writeln('"0" - exit');
+  writeln('------------------------------------');
+end;
+
+function checkNumber: Integer;
+var
+  check: String;
+  Error: Integer;
+begin
+  repeat
+    //write('Enter the action you want to execute... ');
+    readln(check);
+    val(check, Result, Error);
+    if (Error <> 0) or (Result <= -1) then
+      writeln('Incorrect input. Try again', #13#10);
+  until (Error = 0) and (Result > -1);
+end;
+
+procedure doReadFile(const myFile: TextFile);
+var
+  inputString: String;
+  arrayOfString: TMyString;
+  myChar: Char;
+
+begin
+
+  assignFile(myFile, FILE_PATH);
+  reset(myFile);
+  while not EoF do
+
+  begin
+    while not EoLn do
+    begin
+      read(myFile, myChar);
+      inputString := inputString + myChar;
+    end;
+    readln(myFile);
+
+  end;
+
+end;
+
+
+procedure doChoice();
+var
+  number: Integer;
+  choice: Boolean;
+
+begin
+  choice := true;
+  repeat
+
+    writeln(#13#10, 'Which action you want to execute?');
+    writeln('Enter "1" to get info');
+    number := checkNumber;
+
+    case number of
+      0:
+        choice := false;
+      1:
+        showInfo();
+      2:
+        doReadFile(myFile);
+      else
+        writeln(intToStr(number) + ' is incorrect input. Try again');
+    end;
+
+  until choice = false;
+end;
+
+begin
+
+  doChoice;
+  writeln(FINAL_MESSAGE);
+
+readln;
+end.
