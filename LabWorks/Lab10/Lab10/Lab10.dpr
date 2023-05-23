@@ -33,7 +33,7 @@ var
 // Declairing const values
 const
   FINAL_MESSAGE = 'Press any button to terminate...';
-  FILE_PATH = 'E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Lab10\Lab10\MyTextFile.txt';
+  FILE_PATH = '';
 
 
 // Subprogram for printing strings

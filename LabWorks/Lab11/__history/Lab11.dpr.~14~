@@ -1,0 +1,373 @@
+program Lab11;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils;
+
+type
+  PPointer = ^TText;
+  TText = record
+    currentString: String;
+    next: PPointer;
+    prev: PPointer;
+  end;
+
+const
+  FINAL_MESSAGE = 'Press any button to terminate...';
+
+var
+  number: Integer;
+  choice: Boolean;
+  userInputText: String;
+  dividerOfText: Integer;
+  listOf: PPointer;
+  requiredLetter: Char;
+  stringPosition, letterPosition: Integer;
+  isHere: Boolean;
+  toDeleteString, toReplaceString, beReplacedString: Integer;
+
+function setNumber(): Integer;
+var
+  Error: Integer;
+  Check: String;
+
+begin
+
+  repeat
+    readln(Check);
+    val(Check, Result, Error);
+    if (Error <> 0) or (Result <= 1) then
+      writeln('Incorrect input');
+  until (Error = 0) and (Result > 1);
+
+end;
+
+function checkNumber(const separator: Integer): Integer;
+var
+  Error: Integer;
+  Check: String;
+
+begin
+
+  repeat
+    readln(Check);
+    val(Check, Result, Error);
+    if (Error <> 0) or (Result <= 0) or (Result > separator) then
+      writeln('Incorrect input');
+  until (Error = 0) and (Result > 1) and (Result < separator);
+
+end;
+
+procedure showInfo();
+begin
+  writeln('------------------------------------');
+  writeln('"1" - enter the string');
+  writeln('"2" - clean a string buffer');
+  writeln('"3" - divide the string');
+  writeln('"4" - print the string');
+  writeln('"5" - find the letter');
+  writeln('"6" - find the letter');
+  writeln('"7" - replace strings');
+  writeln('"0" - exit');
+  writeln('------------------------------------');
+end;
+
+procedure printString(const inputText: PPointer);
+var
+  i: Integer;
+  pointerOf: PPointer;
+  isPrinted: Boolean;
+  numberOf: Integer;
+
+begin
+
+  write('Enter the number of string to print: ');
+  numberOf := setNumber;
+
+  pointerOf := inputText;
+  i := 1;
+  isPrinted := false;
+
+  while (pointerOf <> nil) and (not isPrinted) do
+  begin
+    if numberOf = 0 then
+    begin
+      writeln(pointerOf^.currentString);
+    end
+    else if i = numberOf then
+    begin
+      write(pointerOf^.currentString);
+      isPrinted := true;
+    end;
+
+    pointerOf := pointerOf^.next;
+    inc(i);
+  end;
+
+end;
+
+procedure doSeparateText(const inputText: String; var divider: Integer; var x: PPointer);
+var
+  y, headOf: PPointer;
+  buffString: String;
+  separator, buffIntDiv, buffIntMod: Integer;
+  lengthOfText: Integer;
+  currentString: String;
+  arrayOfLengthOfString: array[1..2] of Integer;
+  isNull: Boolean;
+  i, j, k, q: Integer;
+
+begin
+
+  repeat
+    write('Enter the separator: ');
+    separator := setNumber;
+    if separator > length(inputText) then
+    begin
+      write('Incorrect input. Try again');
+    end;
+  until separator <= length(inputText);
+
+  lengthOfText := Length(inputText);
+  buffIntDiv := lengthOfText div separator;
+  arrayOfLengthOfString[1] := buffIntDiv;
+  buffIntMod := lengthOfText mod separator;
+
+  if buffIntMod <> 0 then
+  begin
+    arrayOfLengthOfString[2] := buffIntDiv + buffIntMod;
+    isNull := false;
+  end
+  else
+  begin
+    arrayOfLengthOfString[2] := buffIntDiv;
+  end;
+
+  new(x);
+  headOf := x;
+  x^.prev := nil;
+  i := 1;
+
+  while i <= lengthOfText do
+  begin
+    for j := 1 to separator do
+    begin
+      y := x;
+      q := 1;
+      if j = separator then
+      begin
+        q := 2;
+      end;
+
+      for k := 1 to arrayOfLengthOfString[q] do
+      begin
+        y^.currentString := y^.currentString + inputText[i];
+        inc(i);
+      end;
+
+      if j <> separator then
+      begin
+        new(x);
+        y^.next := x;
+        x^.prev := y;
+      end
+      else
+      begin
+        y^.next := nil;
+      end;
+
+
+    end;
+
+  end;
+
+  divider := separator;
+  x := headOf;
+
+end;
+
+function doSearch(const Text: PPointer; var stringNum: Integer; var position: Integer;
+                  const requiredChar: Char): Boolean;
+var
+  i: Integer;
+  currentStringInt: Integer;
+  currentChar: Char;
+  pointerOf: PPointer;
+
+begin
+  result := false;
+  currentStringInt := 0;
+  i := 1;
+  pointerOf := Text;
+
+  while pointerOf <> nil do
+  begin
+    inc(currentStringInt);
+
+    for i := 1 to length(Text.currentString) do
+    begin
+
+      if pointerOf^.currentString[i]	= requiredChar then
+      begin
+        result := true;
+        position := i;
+        stringNum := currentStringInt;
+      end;
+
+    end;
+
+    pointerOf := pointerOf^.next;
+  end;
+
+end;
+
+procedure doDelete(const Text: PPointer; const stringNum: Integer);
+var
+  pointerOf: PPointer;
+  i: Integer;
+  isDeleted: Boolean;
+
+begin
+
+  pointerOf := Text;
+  i := 0;
+  isDeleted := false;
+
+  while (pointerOf <> nil) and (not isDeleted) do
+  begin
+
+    inc(i);
+
+    if i = stringNum then
+    begin
+      if (pointerOf^.next <> nil) and (pointerOf^.prev <> nil) then
+      begin
+        pointerOf^.prev^.next := pointerOf^.next;
+        pointerOf^.next^.prev := pointerOf^.prev;
+        dispose(pointerOf);
+      end
+      else if pointerOf^.next = nil then
+      begin
+        pointerOf^.prev^.next := nil;
+        pointerOf^.prev := nil;
+        dispose(pointerOf);
+      end
+      else if pointerOf^.prev	= nil then
+      begin
+        pointerOf^.next^.prev := nil;
+        pointerOf^.next := nil;
+        dispose(pointerOf);
+      end;
+
+      isDeleted := true;
+
+    end;
+
+    pointerOf := pointerOf^.next;
+
+
+  end;
+
+end;
+
+procedure doReplaceBy(const Text: PPointer; const beReplaced: Integer;
+                      const toReplace: Integer);
+var
+  buffString: String;
+  pointerOfToReplace: PPointer;
+  pointerOfBeReplaced: PPointer;
+  i: Integer;
+
+begin
+
+  i := 1;
+  pointerOfBeReplaced := Text;
+  pointerOfToReplace := Text;
+
+  while i <> beReplaced do
+  begin
+    pointerOfBeReplaced := pointerOfBeReplaced^.next;
+    inc(i);
+  end;
+
+  i := 1;
+  while i <> toReplace do
+  begin
+    pointerOfToReplace := pointerOfToReplace^.next;
+    inc(i);
+  end;
+
+  pointerOfBeReplaced^.currentString := pointerOfToReplace^.currentString;
+
+
+end;
+
+begin
+
+  choice := true;
+
+  repeat
+
+    writeln(#13#10, 'Which action you want to execute?');
+    writeln('Enter "9" to get info');
+    number := setNumber;
+
+
+    case number of
+      1:
+        readln(userInputText);
+      2:
+        userInputText := '';
+      3:
+        doSeparateText(userInputText, dividerOfText, listOf);
+      4:
+        printString(listOf);
+      5:
+        begin
+          write('Enter the letter: ');
+          readln(requiredLetter);
+          isHere := doSearch(listOf, stringPosition, letterPosition, requiredLetter);
+          if isHere = true then
+          begin
+            writeln('String number ' + intToStr(stringPosition) +
+                    ' ,letter position ' + intToStr(letterPosition));
+          end
+          else
+          begin
+            writeln('There is no required letter...');
+          end;
+        end;
+      6:
+        begin
+          write('Enter the number of string to delete: ');
+          toDeleteString := checkNumber(dividerOfText);
+          doDelete(listOf, toDeleteString);
+          writeln('There is no such number of the string to delete');
+
+        end;
+      7:
+        begin
+          write('Enter the number of the string to replace: ');
+          toReplaceString := checkNumber(dividerOfText);
+          write('Enter the number of the string to be replaced: ');
+          beReplacedString := checkNumber(dividerOfText);
+
+          doReplaceBy(listOf, beReplacedString, toReplaceString);
+        end;
+      9:
+        showInfo;
+      0:
+        choice := false;
+      else
+        writeln(intToStr(number) + ' is incorrect input. Try again');
+    end;
+
+  until choice = false;
+
+  writeln(FINAL_MESSAGE);
+//aaabbbccdc
+readln;
+end.

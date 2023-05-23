@@ -1,0 +1,90 @@
+unit UnitDAO;
+
+
+interface
+
+uses
+  UnitCompanyClass, SysUtils, Forms;
+
+type
+
+  PPointerCompanies = ^TListOfCompanies;
+  TListOfCompanies = record
+    companyFromList: TCompany;
+    next: PPointerCompanies;
+  end;
+
+  procedure UnitDAO_initList;
+  procedure UnitDAO_saveList;
+
+
+implementation
+
+uses
+  IniFiles, ShellAPI;
+
+var
+  typedCompanyFile: File of TListOfCompanies;
+  listOfCompanies: PPointerCompanies;
+  company: TCompany;
+  numberOfCompanies: Integer;
+
+  procedure UnitDAO_initList;
+  var
+    fileName: String;
+    iniCompanies: TMemIniFile;
+    listOfGo: PPointerCompanies;
+    i: Integer;
+  begin
+    fileName := ExtractFilePath(Application.ExeName) + 'listOfCompanies.ini';
+    iniCompanies := TMemIniFile.Create(FileName);
+    
+    numberOfCompanies := iniCompanies.ReadInteger('Companies', 'Number', 0);
+
+    listOfGo := listOfCompanies;
+    new(listOfGo);
+    
+    for i := 1 to numberOfCompanies do
+    begin
+      try
+        new(listOfGo^.next);
+        listOfGo := listOfGo^.next;
+        listOfGo^.companyFromList	:= TCompany.Create;	
+        listOfGo^.companyFromList.nameOfCompany	:= 
+          iniCompanies.ReadString('Companies', 'Company' + intToStr(i), 'null');
+          	
+      finally
+        iniCompanies.Free;
+      end;
+    end;
+      
+
+  end;
+
+  procedure UnitDAO_saveList;
+  var
+    fileName: String;
+    iniCompanies: TMemIniFile;
+    listOfGo: PPointerCompanies;
+    i: Integer;
+  begin
+    fileName := ExtractFilePath(Application.ExeName) + 'listOfCompanies.ini';
+    iniCompanies := TMemIniFile.Create(FileName);
+    
+//    numberOfCompanies := iniCompanies.ReadInteger('Companies', 'Number', 0);
+
+    listOfGo := listOfCompanies;
+    
+    for i := 1 to numberOfCompanies do
+    begin
+      try
+        iniCompanies.WriteString('Companies', 'Company' + intToStr(i), listOfGo^.companyFromList.nameOfCompany);
+        listOfGo := listOfGo^.next;	
+      finally
+        iniCompanies.Free;
+      end;
+    end;   
+  end;
+  
+
+end.

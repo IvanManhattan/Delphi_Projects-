@@ -1,0 +1,49 @@
+Program CompanyEmpoyees;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils;
+
+type
+  PPointerCompany = ^companyList;
+  companyList = record
+    nameOfCompany: String;
+    nameOfSpeciality: String;
+    positionName: String;
+    salary: Double;
+    daysOfVacation: Integer;
+    needsHigherEducation: Boolean;
+    minAge: Integer;
+    maxAge: Integer;
+    next: PPointerCompany;
+  end;
+
+  PPointerCandidates = ^candidatesList;
+  candidatesList = record
+    fullName: String;
+    dateOfBirth: Integer;
+    position: String;
+    hasHigherEducation: Boolean;
+    preferredPosition: String;
+    minSalary: Double;
+    next: PPointerCandidates;
+  end;
+
+  PPointer = ^coincidenceList;
+  coincidenceList = record
+    candidate: PPointerCandidates;
+    company: PPointerCompany;
+    next: PPointer;
+  end;
+
+procedure MyProcedure();
+begin
+
+end;
+
+begin
+
+end.

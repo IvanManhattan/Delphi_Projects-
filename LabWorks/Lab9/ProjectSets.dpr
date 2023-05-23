@@ -22,7 +22,7 @@ var
   inputString: AnsiString;
 
 
-procedure MyProcedure(var inputString: AnsiString);
+procedure findLetters(var inputString: AnsiString);
 var
   i, k: Integer;
   s: Char;
@@ -80,7 +80,7 @@ begin
   SetConsoleOutputCP(1251);
 
   readln(inputString);
-  MyProcedure(inputString);
+  findLetters(inputString);
 
   writeln(FINAL_MESSAGE);
 readln;

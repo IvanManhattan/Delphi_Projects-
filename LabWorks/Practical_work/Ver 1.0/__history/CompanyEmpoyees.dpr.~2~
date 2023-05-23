@@ -1,0 +1,77 @@
+Program CompanyEmpoyees;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils;
+
+type
+  PPointerCompany = ^companyList;
+  companyList = record
+    nameOfCompany: String;
+    nameOfSpeciality: String;
+    positionName: String;
+    salary: Double;
+    daysOfVacation: Integer;
+    needsHigherEducation: Boolean;
+    minAge: Integer;
+    maxAge: Integer;
+    next: PPointerCompany;
+  end;
+
+  PPointerCandidates = ^candidatesList;
+  candidatesList = record
+    fullName: String;
+    dateOfBirth: Integer;
+    position: String;
+    hasHigherEducation: Boolean;
+    preferredPosition: String;
+    minSalary: Double;
+    next: PPointerCandidates;
+  end;
+
+  PPointer = ^coincidenceList;
+  coincidenceList = record
+    candidate: PPointerCandidates;
+    company: PPointerCompany;
+    next: PPointer;
+  end;
+
+procedure createListOfCompanies(var listOfCompanies: PPointerCompany);
+var
+  i: Integer;
+  numberOfCompanies: Integer;
+begin
+  writeln('Enter the number of companies: ');
+  readln(numberOfCompanies);
+
+  for i := 1 to numberOfCompanies do
+  begin
+
+  end;
+
+end;
+
+procedure createListOfCandidates();
+begin
+
+end;
+
+
+procedure findCoincidence(const listOfCoincidance: PPointer;
+                          const listOfCandidates: PPointerCandidates;
+                          const listOfCompanies: PPointerCompany);
+var
+  currentCoincidance: PPointer;
+  currentCandidate: PPointerCandidates;
+  currentCompany: PPointerCompany;
+begin
+
+
+end;
+
+begin
+
+end.

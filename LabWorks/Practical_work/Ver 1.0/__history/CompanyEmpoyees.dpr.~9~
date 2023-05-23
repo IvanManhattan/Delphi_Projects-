@@ -1,0 +1,137 @@
+Program CompanyEmpoyees;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils;
+
+type
+  PPointerCompany = ^companyList;
+  companyList = record
+    nameOfCompany: String;
+    nameOfSpeciality: String;
+    positionName: String;
+    salary: Double;
+    daysOfVacation: Integer;
+    needsHigherEducation: Boolean;
+    minAge: Integer;
+    maxAge: Integer;
+    next: PPointerCompany;
+  end;
+
+  PPointerCandidates = ^candidatesList;
+  candidatesList = record
+    fullName: String;
+    dateOfBirth: Integer;
+    speciality: String;
+    hasHigherEducation: Boolean;
+    preferredPosition: String;
+    minSalary: Double;
+    next: PPointerCandidates;
+  end;
+
+  PPointerCoincidance = ^coincidenceList;
+  coincidenceList = record
+    candidate: PPointerCandidates;
+    company: PPointerCompany;
+    next: PPointerCoincidance;
+  end;
+
+  PPointerDeficit = ^deficitList;
+  deficitList = record
+    deficitSpeciality: String;
+    next: PPointerDeficit;
+  end;
+
+procedure createListOfCompanies(var listOfCompanies: PPointerCompany);
+var
+  i: Integer;
+  numberOfCompanies: Integer;
+  headOf: PPointerCompany;
+begin
+
+  headOf := listOfCompanies;
+  writeln('Enter the number of companies: ');
+  readln(numberOfCompanies);
+
+  for i := 1 to numberOfCompanies do
+  begin
+    new(listOfCompanies);
+
+  end;
+
+end;
+
+procedure createListOfCandidates();
+begin
+
+end;
+
+
+procedure findCoincidence(const listOfCoincidance: PPointerCoincidance;
+                          const listOfCandidates: PPointerCandidates;
+                          const listOfCompanies: PPointerCompany);
+var
+  currentYear: Integer;
+  currentCoincidance: PPointerCoincidance;
+  currentCandidate: PPointerCandidates;
+  currentCompany: PPointerCompany;
+begin
+
+  currentCoincidance := listOfCoincidance;
+
+  while currentCandidate <> nil do
+  begin
+    while currentCompany <> nil do
+    begin
+      if ((currentYear - currentCandidate^.dateOfBirth) >= currentCompany^.minAge) and
+         ((currentYear - currentCandidate^.dateOfBirth) <= currentCompany^.maxAge) and
+         (currentCandidate^.hasHigherEducation = currentCompany^.needsHigherEducation) and
+         (currentCandidate^.minSalary	>= currentCompany^.salary) and
+         (currentCandidate^.speciality = currentCompany^.nameOfSpeciality) and   // !!!
+         (currentCandidate^.preferredPosition = currentCompany^.positionName)
+      then
+      begin
+        new(currentCoincidance);
+        currentCoincidance^.candidate := currentCandidate;
+        currentCoincidance^.company := currentCompany;
+        currentCoincidance := currentCoincidance^.next;
+      end;
+
+      currentCompany := currentCompany^.next;
+    end;
+    currentCandidate := currentCandidate^.next;
+  end;
+
+end;
+
+procedure findDeficitconst(const listOfDeficit: PPointerDeficit;
+                           const listOfCandidates: PPointerCandidates;
+                           const listOfCompanies: PPointerCompany);
+var
+  currentDeficitSpeciality: PPointerDeficit;
+  currentCandidate: PPointerCandidates;
+  currentCompany: PPointerCompany;
+  hasCandidates: Boolean;
+begin
+
+  currentDeficitSpeciality := listOfDeficit;
+  while listOfCompanies <> nil do
+  begin
+    while listOfCandidates <> nil do
+    begin
+      if listOfCompanies^.nameOfSpeciality = listOfCandidates^.speciality then
+      begin
+
+      end;
+
+    end;
+  end;
+
+end;
+
+begin
+
+end.

@@ -1,0 +1,96 @@
+Program CompanyEmpoyees;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils;
+
+type
+  PPointerCompany = ^companyList;
+  companyList = record
+    nameOfCompany: String;
+    nameOfSpeciality: String;
+    positionName: String;
+    salary: Double;
+    daysOfVacation: Integer;
+    needsHigherEducation: Boolean;
+    minAge: Integer;
+    maxAge: Integer;
+    next: PPointerCompany;
+  end;
+
+  PPointerCandidates = ^candidatesList;
+  candidatesList = record
+    fullName: String;
+    dateOfBirth: Integer;
+    position: String;
+    hasHigherEducation: Boolean;
+    preferredSpeciality: String;
+    minSalary: Double;
+    next: PPointerCandidates;
+  end;
+
+  PPointer = ^coincidenceList;
+  coincidenceList = record
+    candidate: PPointerCandidates;
+    company: PPointerCompany;
+    next: PPointer;
+  end;
+
+procedure createListOfCompanies(var listOfCompanies: PPointerCompany);
+var
+  i: Integer;
+  numberOfCompanies: Integer;
+begin
+  writeln('Enter the number of companies: ');
+  readln(numberOfCompanies);
+
+  for i := 1 to numberOfCompanies do
+  begin
+
+  end;
+
+end;
+
+procedure createListOfCandidates();
+begin
+
+end;
+
+
+procedure findCoincidence(const listOfCoincidance: PPointer;
+                          const listOfCandidates: PPointerCandidates;
+                          const listOfCompanies: PPointerCompany);
+var
+  currentYear: Integer;
+  currentCoincidance: PPointer;
+  currentCandidate: PPointerCandidates;
+  currentCompany: PPointerCompany;
+begin
+
+  while currentCandidate <> nil do
+  begin
+    while currentCompany <> nil do
+    begin
+      if ((currentYear - currentCandidate^.dateOfBirth) >= currentCompany^.minAge) and
+         ((currentYear - currentCandidate^.dateOfBirth) <= currentCompany^.maxAge) and
+         (currentCandidate^.hasHigherEducation = currentCompany^.needsHigherEducation) and
+         (currentCandidate^.minSalary	>= currentCompany^.salary) and
+         (currentCandidate^.preferredSpeciality	= currentCompany^.nameOfSpeciality) and
+         (currentCandidate^.position = currentCompany^.positionName)
+         then
+         begin
+
+         end;
+
+
+    end;
+  end;
+
+end;
+
+begin
+
+end.

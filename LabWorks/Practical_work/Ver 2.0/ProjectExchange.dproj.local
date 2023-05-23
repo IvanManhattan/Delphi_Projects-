@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.908,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.906,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitDAO.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.182,E:\Delphi 11\Projects_default\Unit1.dfm=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitMain.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.526,E:\Delphi 11\Projects_default\Project1.dproj=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\ProjectExchange.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.457,=E:\Delphi 11\Projects_default\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.182,E:\Delphi 11\Projects_default\Unit1.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitMain.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.118,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.622,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCompanyClass.pas</Transaction>
+  </Transactions>
+</BorlandProject>

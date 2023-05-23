@@ -1,0 +1,240 @@
+program Lab11;
+
+{$APPTYPE CONSOLE}
+
+{$R *.res}
+
+uses
+  System.SysUtils;
+
+type
+  PPointer = ^TText;
+  TText = record
+    currentString: String;
+    next: PPointer;
+    prev: PPointer;
+  end;
+
+var
+  someText: String;
+  d, pos, posstr: Integer;
+  listOf: PPointer;
+  newText: TText;
+  isHere: Boolean;
+
+function setSeparator(): Integer;
+var
+  Error: Integer;
+  Check: String;
+
+begin
+
+  repeat
+    write('Enter the separator: ');
+    readln(Check);
+    val(Check, Result, Error);
+    if (Error <> 0) or (Result <= 1) then
+      writeln('Incorrect input');
+  until (Error = 0) and (Result > 1);
+
+end;
+
+
+procedure doSeparateText(inputText: String; const divider: Integer; var x: PPointer);
+var
+  y, headOf: PPointer;
+  buffString: String;
+  separator, buffIntDiv, buffIntMod: Integer;
+  lengthOfText: Integer;
+  currentString: String;
+  arrayOfLengthOfString: array[1..2] of Integer;
+  isNull: Boolean;
+  i, j, k, q: Integer;
+
+begin
+
+  separator := setSeparator;
+
+  lengthOfText := Length(inputText);
+  buffIntDiv := lengthOfText div separator;
+  arrayOfLengthOfString[1] := buffIntDiv;
+  buffIntMod := lengthOfText mod separator;
+
+  if buffIntMod <> 0 then
+  begin
+    arrayOfLengthOfString[2] := buffIntDiv + buffIntMod;
+    isNull := false;
+  end
+  else
+  begin
+    arrayOfLengthOfString[2] := buffIntDiv;
+  end;
+
+  new(x);
+  headOf := x;
+  x^.prev := nil;
+  i := 1;
+
+  while i <= lengthOfText do
+  begin
+    for j := 1 to separator do
+    begin
+      y := x;
+      q := 1;
+      if j = separator then
+      begin
+        q := 2;
+      end;
+
+      for k := 1 to arrayOfLengthOfString[q] do
+      begin
+        y^.currentString := y^.currentString + inputText[i];
+        inc(i);
+      end;
+
+      if j <> separator then
+      begin
+        new(x);
+        y^.next := x;
+        x^.prev := y;
+      end
+      else
+      begin
+        y^.next := nil;
+      end;
+
+
+    end;
+
+  end;
+
+  x := headOf;
+
+end;
+
+function doSearch(const Text: PPointer; var stringNum: Integer; var position: Integer;
+                  const requiredChar: Char): Boolean;
+var
+  i: Integer;
+  currentString: Integer;
+  currentChar: Char;
+  pointerOf: PPointer;
+
+begin
+  result := false;
+  currentString := 0;
+  i := 1;
+  pointerOf := Text;
+
+  while pointerOf <> nil do
+  begin
+    inc(currentString);
+
+    for i := 1 to length(Text.currentString) do
+    begin
+
+      if pointerOf^.currentString[i]	= requiredChar then
+      begin
+        result := true;
+        position := i;
+        stringNum := currentString;
+      end;
+
+    end;
+
+    pointerOf := pointerOf^.next;
+  end;
+
+end;
+
+procedure doDelete(const Text: PPointer; const stringNum: Integer);
+var
+  pointerOf: PPointer;
+  i: Integer;
+  isDeleted: Boolean;
+
+begin
+
+  pointerOf := Text;
+  i := 0;
+  isDeleted := false;
+
+  while (pointerOf <> nil) and (not isDeleted) do
+  begin
+
+    inc(i);
+
+    if i = stringNum then
+    begin
+      if (pointerOf^.next <> nil) and (pointerOf^.prev <> nil) then
+      begin
+        pointerOf^.prev^.next := pointerOf^.next;
+        pointerOf^.next^.prev := pointerOf^.prev;
+        dispose(pointerOf);
+      end
+      else if pointerOf^.next = nil then
+      begin
+        pointerOf^.prev^.next := nil;
+        pointerOf^.prev := nil;
+        dispose(pointerOf);
+      end
+      else if pointerOf^.prev	= nil then
+      begin
+        pointerOf^.next^.prev := nil;
+        pointerOf^.next := nil;
+        dispose(pointerOf);
+      end;
+
+      isDeleted := true;
+
+    end;
+
+    pointerOf := pointerOf^.next;
+
+//aaabbbccdc
+
+  end;
+
+end;
+
+procedure doReplaceBy(const Text: PPointer; const beReplaced: Integer;
+                      const toReplace: Integer);
+var
+  buffString: String;
+  pointerOfToReplace: PPointer;
+  pointerOfBeReplaced: PPointer;
+  i: Integer;
+
+begin
+
+  i := 1;
+  pointerOfBeReplaced := Text;
+  pointerOfToReplace := Text;
+
+  while i <> beReplaced do
+  begin
+    pointerOfBeReplaced := pointerOfBeReplaced^.next;
+    inc(i);
+  end;
+
+  i := 1;
+  while i <> toReplace do
+  begin
+    pointerOfToReplace := pointerOfToReplace^.next;
+    inc(i);
+  end;
+
+  pointerOfBeReplaced^.currentString := pointerOfToReplace^.currentString;
+
+
+end;
+
+begin
+
+  readln(someText);
+  doSeparateText(someText, d, listOf);
+  isHere := doSearch(listOf, posstr, pos, 'd');
+//  doDelete(listOf, 2);
+  doReplaceBy(listOf, 2, 3);
+
+end.
