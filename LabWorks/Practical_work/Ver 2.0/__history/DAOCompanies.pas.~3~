@@ -1,0 +1,103 @@
+unit DAOCompanies;
+
+
+interface
+
+uses
+  CompanyClass, SysUtils, Forms;
+
+type
+  TOnModelChanged = procedure of object;
+  PPointerCompanies = ^TListOfCompanies;
+  TListOfCompanies = record
+    companyFromList: TCompany;
+    next: PPointerCompanies;
+  end;
+
+  function DAOCompanies_initList: PPointerCompanies;
+  procedure DAOCompanies_saveList;
+
+
+implementation
+
+uses
+  IniFiles, ShellAPI;
+
+var
+  typedCompanyFile: File of TListOfCompanies;
+  listOfCompanies: PPointerCompanies;
+  company: TCompany;
+  numberOfCompanies: Integer;
+
+  function DAOCompanies_initList: PPointerCompanies;
+  var
+    fileName: String;
+    iniCompanies: TMemIniFile;
+    listOfGo, listTemp: PPointerCompanies;
+    currCompany: TCompany;
+    i: Integer;
+  begin
+    fileName := ExtractFilePath(Application.ExeName) + 'listOfCompanies.ini';
+    iniCompanies := TMemIniFile.Create(fileName);
+
+    numberOfCompanies := iniCompanies.ReadInteger('Number', 'Number', 0);
+
+    new(listOfGo);
+    listOfCompanies := listOfGo;
+    listTemp := listOfGo;
+    
+    for i := 1 to numberOfCompanies do
+    begin
+      try
+        new(listOfGo^.next);
+        listOfGo := listOfGo^.next;
+        listOfGo^.companyFromList	:= TCompany.Create;
+        //currCompany := TCompany.Create;
+        //listOfGo^.companyFromList	:= currCompany;
+        listOfGo^.companyFromList.nameOfCompany	:= 
+          iniCompanies.ReadString('Company' + intToStr(i), 'CompanyName', 'null');
+          	
+      finally
+        iniCompanies.Free; 
+      end;
+    end;
+    listOfGo^.next := nil;
+      
+    result := listOfCompanies;
+  end;
+
+  procedure DAOCompanies_saveList;
+  var
+    fileName: String;
+    iniCompanies: TMemIniFile;
+    listOfGo: PPointerCompanies;
+    i: Integer;
+  begin
+    fileName := ExtractFilePath(Application.ExeName) + 'listOfCompanies.ini';
+    iniCompanies := TMemIniFile.Create(FileName);
+    
+//    numberOfCompanies := iniCompanies.ReadInteger('Companies', 'Number', 0);
+    iniCompanies.WriteInteger('Companies', 'Number', numberOfCompanies);
+    listOfGo := listOfCompanies;
+    listOfGo := listOfGo^.next;
+    i := 1;
+    
+    while listOfGo <> nil do
+    begin
+      try
+        iniCompanies.WriteString('Companies', 'Company' + intToStr(i), listOfGo^.companyFromList.nameOfCompany);
+        listOfGo := listOfGo^.next;
+        iniCompanies.UpdateFile;
+        inc(i);
+      finally
+        iniCompanies.Free;
+      end;
+    end;
+
+
+  end;
+
+
+  
+
+end.

@@ -1,0 +1,96 @@
+object FormEmployeesList: TFormEmployeesList
+  Left = 0
+  Top = 0
+  Caption = 'FormEmployeesList'
+  ClientHeight = 513
+  ClientWidth = 942
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  PixelsPerInch = 96
+  TextHeight = 15
+  object PanelMain: TPanel
+    Left = 0
+    Top = 0
+    Width = 942
+    Height = 513
+    Align = alClient
+    TabOrder = 0
+    object PanelControlEmployees: TPanel
+      Left = 701
+      Top = 1
+      Width = 240
+      Height = 511
+      Align = alRight
+      TabOrder = 0
+      object editEmployee: TButton
+        Left = 56
+        Top = 146
+        Width = 140
+        Height = 50
+        Caption = 'Edit employee'
+        TabOrder = 0
+      end
+      object deleteEmployee: TButton
+        Left = 56
+        Top = 236
+        Width = 140
+        Height = 50
+        Caption = 'Delete employee'
+        TabOrder = 1
+      end
+      object addEmployee: TButton
+        Left = 56
+        Top = 50
+        Width = 140
+        Height = 50
+        Action = ActionAddNewEmployee
+        TabOrder = 2
+      end
+    end
+    object listOfEmployees: TListView
+      Left = 1
+      Top = 1
+      Width = 700
+      Height = 511
+      Align = alClient
+      Columns = <
+        item
+          Caption = 'Name'
+        end
+        item
+          Caption = 'Age'
+        end>
+      TabOrder = 1
+    end
+  end
+  object ActionListEmployees: TActionList
+    Left = 80
+    Top = 88
+    object ActionAddNewEmployee: TAction
+      Caption = 'ActionAddNewEmployee'
+    end
+    object Action1: TAction
+      Caption = 'Action1'
+    end
+    object Action2: TAction
+      Caption = 'Action2'
+    end
+    object Action3: TAction
+      Caption = 'Action3'
+    end
+    object Action4: TAction
+      Caption = 'Action4'
+    end
+    object Action5: TAction
+      Caption = 'Action5'
+    end
+    object Action6: TAction
+      Caption = 'Action6'
+      OnExecute = ActionViewExecute
+    end
+  end
+end

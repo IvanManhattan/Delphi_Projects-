@@ -1,0 +1,33 @@
+unit UnitEmployeeForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.ExtCtrls,
+  System.Actions, Vcl.ActnList;
+
+type
+  TFormEmployeesList = class(TForm)
+    PanelMain: TPanel;
+    PanelControlEmployees: TPanel;
+    listOfEmployees: TListView;
+    editEmployee: TButton;
+    deleteEmployee: TButton;
+    ActionListEmployees: TActionList;
+    ActionAddNewEmployee: TAction;
+    addEmployee: TButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormEmployeesList: TFormEmployeesList;
+
+implementation
+
+{$R *.dfm}
+
+  end.

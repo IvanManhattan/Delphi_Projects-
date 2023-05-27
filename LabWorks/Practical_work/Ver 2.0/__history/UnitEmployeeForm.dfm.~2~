@@ -1,0 +1,87 @@
+object FormEmployeesList: TFormEmployeesList
+  Left = 0
+  Top = 0
+  Caption = 'FormEmployeesList'
+  ClientHeight = 513
+  ClientWidth = 942
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 15
+  object PanelMain: TPanel
+    Left = 0
+    Top = 0
+    Width = 942
+    Height = 513
+    Align = alClient
+    TabOrder = 0
+    ExplicitLeft = 232
+    ExplicitTop = 224
+    ExplicitWidth = 185
+    ExplicitHeight = 41
+    object PanelControlEmployees: TPanel
+      Left = 701
+      Top = 1
+      Width = 240
+      Height = 511
+      Align = alRight
+      TabOrder = 0
+      ExplicitLeft = 720
+      object Button1: TButton
+        Left = 56
+        Top = 56
+        Width = 140
+        Height = 50
+        Caption = 'Add new employee'
+        TabOrder = 0
+      end
+      object Button2: TButton
+        Left = 56
+        Top = 146
+        Width = 140
+        Height = 50
+        Caption = 'Edit employee'
+        TabOrder = 1
+      end
+      object Button3: TButton
+        Left = 56
+        Top = 236
+        Width = 140
+        Height = 50
+        Caption = 'Delete employee'
+        TabOrder = 2
+      end
+    end
+    object ListView1: TListView
+      Left = 1
+      Top = 1
+      Width = 700
+      Height = 511
+      Align = alClient
+      Columns = <
+        item
+          Caption = 'Name'
+        end
+        item
+          Caption = 'Age'
+        end>
+      TabOrder = 1
+      ExplicitLeft = 184
+      ExplicitTop = 144
+      ExplicitWidth = 250
+      ExplicitHeight = 150
+    end
+  end
+  object ActionListEmployees: TActionList
+    Left = 56
+    Top = 72
+    object ActionAddNewEmployee: TAction
+      Caption = 'ActionAddNewEmployee'
+    end
+  end
+end

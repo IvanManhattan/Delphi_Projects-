@@ -1,0 +1,71 @@
+unit UnitEmployeeForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.ExtCtrls,
+  System.Actions, Vcl.ActnList, DAOEmployees;
+
+type
+  TFormEmployeesList = class(TForm)
+    PanelMain: TPanel;
+    PanelControlEmployees: TPanel;
+    listOfEmployees: TListView;
+    editEmployee: TButton;
+    deleteEmployee: TButton;
+    ActionListEmployees: TActionList;
+    ActionAddNewEmployee: TAction;
+    addEmployee: TButton;
+    ActionEditEmployee: TAction;
+    ActionDeleteEmployee: TAction;
+    procedure ActionAddNewEmployeeExecute(Sender: TObject);
+    procedure ActionListEmployeesUpdate(Action: TBasicAction;
+      var Handled: Boolean);
+    procedure UpdateList;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormEmployeesList: TFormEmployeesList;
+
+implementation
+
+{$R *.dfm}
+
+  procedure TFormEmployeesList.ActionAddNewEmployeeExecute(Sender: TObject);
+  var
+    Res: TModalResult;
+
+  begin
+
+  end;
+
+  procedure TFormEmployeesList.ActionListEmployeesUpdate(Action: TBasicAction; var Handled: Boolean);
+  begin
+    ActionAddNewEmployee.Enabled := True;
+    ActionEditEmployee.Enabled := listOfEmployees.ItemIndex >= 0;
+    ActionDeleteEmployee.Enabled := listOfEmployees.ItemIndex >= 0;
+  end;
+
+  procedure TFormEmployeesList.UpdateList;
+  var
+    i: Integer;
+    Employee: PPointerEmployees;
+    Item: TListItem;
+  begin
+    Employee := getListOfEmployees;
+    Employee := Employee.next;
+    listOfEmployees.Items.Clear;
+
+    while Employee <> nil do
+    begin
+
+    end;
+
+  end;
+
+  end.
