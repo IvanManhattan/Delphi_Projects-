@@ -1,0 +1,74 @@
+unit uSearch;
+
+interface
+
+uses
+  EmployeeClass, CompanyClass, DAOCompanies;
+
+type
+  PPointerSuggCompanies = ^listOfSuggCompanies;
+  listOfSuggCompanies = record
+    suggCompany: TCompany;
+    next: PPointerSuggCompanies;
+  end;
+
+  function uSearch_findSuggCompaniesStrict(employee: TEmployee): PPointerSuggCompanies;
+  function uSearch_getListOfSuggestions: PPointerSuggCompanies;
+  procedure uSearch_SetCallback(ACallBack: TOnModelChanged);
+
+implementation
+
+uses
+  ShellAPI;
+
+var
+  listOfSuggestions: PPointerSuggCompanies;
+  ViewCallback: TOnModelChanged;
+
+  procedure uSearch_SetCallback(ACallBack: TOnModelChanged);
+  begin
+    ViewCallback := ACallBack;
+  end;
+
+
+  function uSearch_findSuggCompaniesStrict(employee: TEmployee): PPointerSuggCompanies;
+  var
+    listOfSuggC: PPointerSuggCompanies;
+    listOfC: PPointerCompanies;
+//    tmpStr1, tmpStr2: String;
+  begin
+    new(listOfSuggC);
+    listOfSuggestions := listOfSuggC;
+
+    listOfC := getListOfCompanies;
+    listOfC := listOfC^.next;
+
+//    tmpStr1 := employee.specialityOf;
+//    tmpStr2 := listOfC.companyFromList.nameOfSpeciality;
+
+    while listOfC <> nil do
+    begin
+      if (employee.specialityOf	= listOfC.companyFromList.nameOfSpeciality)
+        and (employee.preferredPosition	= listOfC.companyFromList.positionName)
+        and (listOfC.companyFromList.salary	>= employee.minSalary) then
+      begin
+        new(listOfSuggC^.next);
+        listOfSuggC := listOfSuggC^.next;
+        listOfSuggC.suggCompany	:= listOfC.companyFromList;
+      end;
+      listOfC := listOfC^.next;
+    end;
+
+    listOfSuggC^.next	:= nil;
+
+    result := listOfSuggestions;
+
+  end;
+
+
+  function uSearch_getListOfSuggestions(): PPointerSuggCompanies;
+  begin
+    result := listOfSuggestions;
+  end;
+
+end.

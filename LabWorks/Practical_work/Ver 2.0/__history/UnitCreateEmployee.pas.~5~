@@ -1,0 +1,60 @@
+unit UnitCreateEmployee;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, EmployeeClass;
+
+type
+  TFormCreateEmployee = class(TForm)
+    PanelMainCreateCompany: TPanel;
+    LabelLogo: TLabel;
+    EditName: TEdit;
+    EditSpeciality: TEdit;
+    EditPosition: TEdit;
+    EditSalary: TEdit;
+    EditDate: TEdit;
+    EditHasHiggherEducation: TEdit;
+    ButtonCreate: TButton;
+    ButtonCancel: TButton;
+  private
+    { Private declarations }
+  public
+    function ShowForNewEmployee(var employee: TEmployee): TModalResult;
+    function ShowForEditEmployee(var employee: TEmployee): TModalResult;
+  end;
+
+var
+  FormCreateEmployee: TFormCreateEmployee;
+
+implementation
+
+{$R *.dfm}
+
+
+  function TFormCreateEmployee.ShowForNewEmployee(var employee: TEmployee): TModalResult;
+  begin
+    Result := ShowModal;
+
+    if Result = MrOk then
+    begin
+      Employee := TEmployee.Create;
+      with Employee do
+      begin
+        fullName := EditName.Text;
+        dateOfBirth := StrToDate(EditDate.Text);
+        specialityOf := EditSpeciality.Text;
+        preferredPosition := EditPosition.Text;
+        minSalary := StrToFloat(EditSalary.Text);
+        hasHigherEducation := StrToBool(EditHasHiggherEducation.Text);
+      end;
+    end;
+  end;
+
+  function TFormCreateEmployee.ShowForEditEmployee(var employee: TEmployee): TModalResult;
+  begin
+
+  end;
+
+end.

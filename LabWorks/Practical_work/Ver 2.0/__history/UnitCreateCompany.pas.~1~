@@ -1,0 +1,55 @@
+unit UnitCreateCompany;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, CompanyClass;
+
+type
+  TFormCreateCompany = class(TForm)
+    PanelMainCreateCompany: TPanel;
+    EditName: TEdit;
+    EditSpeciality: TEdit;
+    EditPosition: TEdit;
+    EditSalary: TEdit;
+    EditDaysOfVacation: TEdit;
+    EditMinAge: TEdit;
+    EditMaxAge: TEdit;
+    EditNeedsHiggherEducation: TEdit;
+    Button1: TButton;
+    LabelLogo: TLabel;
+  private
+
+  public
+    function ShowForNewCompany(var company: TCompany): TModalResult;
+  end;
+
+var
+  formCreateCompany: TFormCreateCompany;
+
+implementation
+
+
+{$R *.dfm}
+
+  function TFormCreateCompany.ShowForNewCompany(var company: TCompany): TModalResult;
+  begin
+
+    Result := ShowModal;
+
+    if Result = MrOk then
+    begin
+      Company := TCompany.Create;
+      Company.nameOfCompany	:= EditName.Text;
+      Company.nameOfSpeciality := EditSpeciality.Text;
+      Company.positionName := EditPosition.Text;
+      Company.salary := StrToFloat(EditSalary.Text);
+      Company.daysOfVacation := StrToInt(EditDaysOfVacation.Text);
+      Company.minAge := StrToInt(EditMinAge.Text);
+      Company.maxAge := StrToInt(EditMaxAge.Text);
+      Company.needsHigherEducation := StrToBool(EditNeedsHiggherEducation.Text);
+    end;
+  end;
+
+end.

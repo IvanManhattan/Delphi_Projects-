@@ -1,0 +1,76 @@
+unit UnitInfoEmployee;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls,
+  System.Actions, Vcl.ActnList, EmployeeClass;
+
+type
+  TFormEmployeeInfo = class(TForm)
+    PanelMainInfo: TPanel;
+    EditName: TEdit;
+    EditSpeciality: TEdit;
+    EditPosition: TEdit;
+    EditAge: TEdit;
+    EditSalary: TEdit;
+    EditHigherEdu: TEdit;
+    PanelListOfSugg: TPanel;
+    listOfSugg: TListView;
+    ActionListSugg: TActionList;
+    ActionStrictSearch: TAction;
+    Button1: TButton;
+    procedure FormCreate(Sender: TObject);
+    function ShowForEmployee(var employee: TEmployee): TModalResult;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormEmployeeInfo: TFormEmployeeInfo;
+
+implementation
+
+uses
+  IniFiles, ShellAPI;
+{$R *.dfm}
+
+  procedure TFormEmployeeInfo.FormCreate(Sender: TObject);
+  var
+    FileName: String;
+    iniSettings: TMemIniFile;
+  begin
+    FileName := ExtractFilePath(Application.ExeName) + 'settings.ini';
+    iniSettings := TMemIniFile.Create(FileName);
+    try
+      Left := iniSettings.ReadInteger('Window', 'Left', 0) + 30;
+      Top := iniSettings.ReadInteger('Window', 'Top', 0) + 30;
+    finally
+      iniSettings.Free;
+    end;
+  end;
+
+  function TFormEmployeeInfo.ShowForEmployee(var employee: TEmployee): TModalResult;
+  var
+    currDate: TDate;
+  begin
+    currDate := Date;
+    EditName.Text	:= employee.fullName;
+    EditSpeciality.Text	:= employee.specialityOf;
+    EditPosition.Text	:= employee.preferredPosition;
+    EditAge.Text := FloatToStr(currDate - employee.dateOfBirth);
+    if employee.hasHigherEducation = true then
+    begin
+      EditHigherEdu.Text := 'Yes';
+    end
+    else
+    begin
+      EditHigherEdu.Text := 'No';
+    end;
+
+    Result := ShowModal;
+  end;
+end.

@@ -1,32 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.457,=E:\Delphi 11\Projects_default\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.463,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\DA.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.859,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.dfm=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeForm.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.839,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\EmployeeClass.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeClass.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.815,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\EmployeeList.pas=</Transaction>
     <Transaction>1899.12.30 00:00:00.000.112,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\EmployeeList.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.182,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitMain.pas=E:\Delphi 11\Projects_default\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.457,=E:\Delphi 11\Projects_default\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.845,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeForm.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCompanyForm.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.859,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.dfm=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.815,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\EmployeeList.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.553,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\DAOCompanies.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitDAO.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.906,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitDAO.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.845,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeForm.dfm=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCompanyForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.839,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\EmployeeClass.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeClass.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.392,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.dfm=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCreateEmployee.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.146,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\CompanyClass.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCompanyClass.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.207,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\DAOEmploees.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\DAOEmployes.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.526,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\ProjectExchange.dproj=E:\Delphi 11\Projects_default\Project1.dproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.622,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCompanyClass.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.845,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeForm.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCompanyForm.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.182,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitMain.dfm=E:\Delphi 11\Projects_default\Unit1.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.146,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\CompanyClass.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCompanyClass.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.845,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeForm.dfm=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCompanyForm.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.118,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.286,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.616,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.dfm=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCreateCompany.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.400,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.dfm=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitInfoEmployee.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.182,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitMain.pas=E:\Delphi 11\Projects_default\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.463,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\DA.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.533,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.796,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeClass.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.859,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeForm.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.688,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.908,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.118,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.725,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.636,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\DAOEmployes.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.553,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\DAOCompanies.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitDAO.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.906,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitDAO.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.405,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.796,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeClass.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.392,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCreateEmployee.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.616,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitCreateCompany.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.859,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitEmployeeForm.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.981,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.787,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.399,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\UnitInfoEmployee.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.546,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\DAOEmployees.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\DAOEmploees.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.636,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\DAOEmployes.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.286,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.987,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.181,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.405,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>2023.06.01 13:44:10.486,=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
+    <Transaction>2023.06.01 13:44:37.982,E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\uSearch.pas=E:\Delphi2023\DelphiLabs\Labs\Delphi_Projects-\LabWorks\Practical_work\Ver 2.0\Unit1.pas</Transaction>
   </Transactions>
 </BorlandProject>

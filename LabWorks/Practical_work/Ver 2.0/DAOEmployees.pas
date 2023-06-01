@@ -16,6 +16,9 @@ type
   function DAOEmployees_initList: PPointerEmployees;
   function getListOfEmployees: PPointerEmployees;
   procedure DAOEmploees_saveList;
+  procedure DAOEmployees_AddEmployee(Employee: TEmployee);
+  procedure DAOEmployees_DeleteEmployee(Employee: TEmployee);
+  function getEmployeeAge(employee: TEmployee): Word;
 
 implementation
 
@@ -59,12 +62,18 @@ var
           iniEmployees.ReadDate('Employee' + intToStr(i), 'DateOfBirth', 0);
         listOfGo^.employeeFromList.specialityOf :=
           iniEmployees.ReadString('Employee' + intToStr(i), 'Speciality', 'null');
-        listOfGo^.employeeFromList.hasHigherEducation :=
-          iniEmployees.ReadBool('Employee' + intToStr(i), 'HigherEducation', False);
         listOfGo^.employeeFromList.preferredPosition :=
           iniEmployees.ReadString('Employee' + intToStr(i), 'Position', 'null');
         listOfGo^.employeeFromList.minSalary :=
           iniEmployees.ReadFloat('Employee' + intToStr(i), 'Salary', 0.0);
+        if iniEmployees.ReadString('Employee' + intToStr(i), 'HigherEducation', 'null') = 'Yes' then
+        begin
+          listOfGo^.employeeFromList.hasHigherEducation := true;
+        end
+        else
+        begin
+          listOfGo^.employeeFromList.hasHigherEducation := false;
+        end;
       end;
       finally
         iniEmployees.Free;
@@ -108,7 +117,7 @@ var
       finally
         iniEmployees.Free;
       end;
-      
+
     end;
 
 
@@ -119,5 +128,87 @@ var
   begin
     result := listOfEmployees;
   end;
-  
+
+  procedure DAOEmployees_AddEmployee(Employee: TEmployee);
+  var
+    currEmployee: PPointerEmployees;
+  begin
+    currEmployee := listOfEmployees;
+
+    while currEmployee^.next <> nil do
+    begin
+      currEmployee := currEmployee^.next;
+    end;
+
+    new(currEmployee^.next);
+    currEmployee := currEmployee^.next;
+    currEmployee^.employeeFromList := Employee;
+    currEmployee^.next	:= nil;
+
+
+  end;
+
+  procedure DAOEmployees_DeleteEmployee(Employee: TEmployee);
+  var
+    currEmployeeX, currEmployeeY: PPointerEmployees;
+  begin
+    currEmployeeX := listOfEmployees;
+    currEmployeeX := currEmployeeX^.next;
+    currEmployeeY := currEmployeeX;
+
+    while currEmployeeX.employeeFromList <> Employee do
+    begin
+      currEmployeeX := currEmployeeX^.next;
+    end;
+
+    if currEmployeeX <> currEmployeeY then
+    begin
+      while currEmployeeY^.next.employeeFromList <> Employee do
+      begin
+        currEmployeeY := currEmployeeY^.next;
+      end;
+      currEmployeeX := currEmployeeY^.next;
+      currEmployeeY^.next := currEmployeeY^.next.next;
+    end
+    else
+    begin
+      listOfEmployees^.next := currEmployeeX^.next;
+      currEmployeeX^.next := nil;
+    end;
+
+    FreeAndNil(currEmployeeX^.employeeFromList);
+
+  end;
+
+  function getEmployeeAge(employee: TEmployee): Word;
+  var
+    birthYear, birthMonth, birthDay, currYear, currMonth, currDay, res: Word;
+  begin
+    decodeDate(Date, currYear, currMonth, currDay);
+    decodeDate(employee.dateOfBirth, birthYear, birthMonth, birthDay);
+
+    if (currYear = birthYear) and (currMonth = birthMonth) and (currDay = birthDay) then
+    begin
+      result := 0;
+    end
+    else
+    begin
+      result := currYear - birthYear;
+      if birthMonth > currMonth then
+      begin
+        dec(result);
+      end
+      else
+      begin
+        if currMonth = birthMonth then
+        begin
+          if birthDay > currDay then
+          begin
+            dec(result);
+          end;
+        end;
+      end;
+    end;
+  end;
+
 end.

@@ -1,0 +1,118 @@
+unit UnitCreateCompany;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, CompanyClass;
+
+type
+  TFormCreateCompany = class(TForm)
+    PanelMainCreateCompany: TPanel;
+    EditName: TEdit;
+    EditSpeciality: TEdit;
+    EditPosition: TEdit;
+    EditSalary: TEdit;
+    EditDaysOfVacation: TEdit;
+    EditMinAge: TEdit;
+    EditMaxAge: TEdit;
+    EditNeedsHiggherEducation: TEdit;
+    ButtonCreate: TButton;
+    LabelLogo: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure EditNameClick(Sender: TObject);
+    procedure EditSpecialityClick(Sender: TObject);
+    procedure EditPositionClick(Sender: TObject);
+  private
+
+  public
+    function ShowForNewCompany(var company: TCompany): TModalResult;
+    function ShowForEditCompany(var company: TCompany): TModalResult;
+  end;
+
+var
+  formCreateCompany: TFormCreateCompany;
+
+implementation
+
+uses
+  IniFiles, ShellAPI;
+
+{$R *.dfm}
+
+
+  procedure TFormCreateCompany.EditNameClick(Sender: TObject);
+  begin
+    EditName.Text	:= '';
+  end;
+
+  procedure TFormCreateCompany.EditPositionClick(Sender: TObject);
+  begin
+    EditPosition.Text	:= '';
+  end;
+
+procedure TFormCreateCompany.EditSpecialityClick(Sender: TObject);
+  begin
+    EditSpeciality.Text	:= '';
+  end;
+
+procedure TFormCreateCompany.FormCreate(Sender: TObject);
+  var
+    FileName: String;
+    iniSettings: TMemIniFile;
+  begin
+    FileName := ExtractFilePath(Application.ExeName) + 'settingsCompany.ini';
+    iniSettings := TMemIniFile.Create(FileName);
+    try
+      Left := iniSettings.ReadInteger('Form', 'Left', 0) + 30;
+      Top := iniSettings.ReadInteger('Form', 'Top', 0) + 30;
+    finally
+      iniSettings.Free;
+    end;
+  end;
+
+  function TFormCreateCompany.ShowForNewCompany(var company: TCompany): TModalResult;
+  begin
+
+    Result := ShowModal;
+
+    if Result = MrOk then
+    begin
+      Company := TCompany.Create;
+      Company.nameOfCompany	:= EditName.Text;
+      Company.nameOfSpeciality := EditSpeciality.Text;
+      Company.positionName := EditPosition.Text;
+      Company.salary := StrToFloat(EditSalary.Text);
+      Company.daysOfVacation := StrToInt(EditDaysOfVacation.Text);
+      Company.minAge := StrToInt(EditMinAge.Text);
+      Company.maxAge := StrToInt(EditMaxAge.Text);
+      Company.needsHigherEducation := StrToBool(EditNeedsHiggherEducation.Text);
+    end;
+  end;
+
+  function TFormCreateCompany.ShowForEditCompany(var company: TCompany): TModalResult;
+  begin
+    EditName.Text := company.nameOfCompany;
+    EditSpeciality.Text	:= company.nameOfSpeciality;
+    EditPosition.Text	:= company.positionName;
+    EditSalary.Text	:= FloatToStr(company.salary);
+    EditDaysOfVacation.Text	:= IntToStr(company.daysOfVacation);
+    EditMinAge.Text := IntToStr(company.minAge);
+    EditMaxAge.Text := IntToStr(company.maxAge);
+    EditNeedsHiggherEducation.Text := BoolToStr(company.needsHigherEducation);
+
+    Result := ShowModal;
+    if Result = mrOk then
+    begin
+      Company.nameOfCompany	:= EditName.Text;
+      Company.nameOfSpeciality := EditSpeciality.Text;
+      Company.positionName := EditPosition.Text;
+      Company.salary := StrToFloat(EditSalary.Text);
+      Company.daysOfVacation := StrToInt(EditDaysOfVacation.Text);
+      Company.minAge := StrToInt(EditMinAge.Text);
+      Company.maxAge := StrToInt(EditMaxAge.Text);
+      Company.needsHigherEducation := StrToBool(EditNeedsHiggherEducation.Text);
+    end;
+  end;
+
+end.

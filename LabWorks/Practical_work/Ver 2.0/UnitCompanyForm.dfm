@@ -28,7 +28,7 @@ object FormEmployeesList: TFormEmployeesList
       Height = 511
       Align = alRight
       TabOrder = 0
-      object editEmployee: TButton
+      object editCompany: TButton
         Left = 56
         Top = 146
         Width = 140
@@ -36,7 +36,7 @@ object FormEmployeesList: TFormEmployeesList
         Action = ActionEditCompany
         TabOrder = 0
       end
-      object deleteEmployee: TButton
+      object deleteCompany: TButton
         Left = 56
         Top = 236
         Width = 140
@@ -44,13 +44,37 @@ object FormEmployeesList: TFormEmployeesList
         Action = ActionDeleteCompany
         TabOrder = 1
       end
-      object addEmployee: TButton
+      object addCompany: TButton
         Left = 56
         Top = 50
         Width = 140
         Height = 50
         Action = ActionAddNewCompany
         TabOrder = 2
+      end
+      object ButtonDeficitSpecialities: TButton
+        Left = 56
+        Top = 328
+        Width = 140
+        Height = 50
+        Action = ActionDeficitSpecialities
+        TabOrder = 3
+      end
+      object Button1: TButton
+        Left = 56
+        Top = 416
+        Width = 140
+        Height = 50
+        Action = ActionNoCandidates
+        TabOrder = 4
+      end
+      object ButtonGetBack: TButton
+        Left = 17
+        Top = 11
+        Width = 33
+        Height = 33
+        Action = ActionGetBack
+        TabOrder = 5
       end
     end
     object listOfCompanies: TListView
@@ -99,8 +123,6 @@ object FormEmployeesList: TFormEmployeesList
   end
   object ActionListCompanies: TActionList
     OnUpdate = ActionListCompaniesUpdate
-    Left = 64
-    Top = 56
     object ActionAddNewCompany: TAction
       Caption = 'ActionAddNewCompany'
       OnExecute = ActionAddNewCompanyExecute
@@ -112,6 +134,18 @@ object FormEmployeesList: TFormEmployeesList
     object ActionDeleteCompany: TAction
       Caption = 'ActionDeleteCompany'
       OnExecute = ActionDeleteCompanyExecute
+    end
+    object ActionDeficitSpecialities: TAction
+      Caption = 'ActionDeficitSpecialities'
+      OnExecute = ActionDeficitSpecialitiesExecute
+    end
+    object ActionNoCandidates: TAction
+      Caption = 'ActionNoCandidates'
+      OnExecute = ActionNoCandidatesExecute
+    end
+    object ActionGetBack: TAction
+      Caption = 'ActionGetBack'
+      OnExecute = ActionGetBackExecute
     end
   end
 end

@@ -1,0 +1,117 @@
+object FormEmployeesList: TFormEmployeesList
+  Left = 0
+  Top = 0
+  BorderStyle = bsDialog
+  Caption = 'FormEmployeesList'
+  ClientHeight = 513
+  ClientWidth = 942
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 15
+  object PanelMain: TPanel
+    Left = 0
+    Top = 0
+    Width = 942
+    Height = 513
+    Align = alClient
+    TabOrder = 0
+    object PanelControlEmployees: TPanel
+      Left = 701
+      Top = 1
+      Width = 240
+      Height = 511
+      Align = alRight
+      TabOrder = 0
+      object editEmployee: TButton
+        Left = 56
+        Top = 146
+        Width = 140
+        Height = 50
+        Action = ActionEditCompany
+        TabOrder = 0
+      end
+      object deleteEmployee: TButton
+        Left = 56
+        Top = 236
+        Width = 140
+        Height = 50
+        Action = ActionDeleteCompany
+        TabOrder = 1
+      end
+      object addEmployee: TButton
+        Left = 56
+        Top = 50
+        Width = 140
+        Height = 50
+        Action = ActionAddNewCompany
+        TabOrder = 2
+      end
+    end
+    object listOfCompanies: TListView
+      Left = 1
+      Top = 1
+      Width = 700
+      Height = 511
+      Align = alClient
+      Columns = <
+        item
+          Caption = 'Name'
+          Width = 100
+        end
+        item
+          Caption = 'Speciality Name'
+          Width = 100
+        end
+        item
+          Caption = 'Position'
+          Width = 70
+        end
+        item
+          Caption = 'Salary'
+        end
+        item
+          Caption = 'Days of vacation'
+          Width = 100
+        end
+        item
+          Caption = 'Higher Education'
+          Width = 110
+        end
+        item
+          Caption = 'Min Age'
+          Width = 70
+        end
+        item
+          Caption = 'Max Age'
+          Width = 70
+        end>
+      ReadOnly = True
+      RowSelect = True
+      TabOrder = 1
+      ViewStyle = vsReport
+    end
+  end
+  object ActionListCompanies: TActionList
+    OnUpdate = ActionListCompaniesUpdate
+    Left = 64
+    Top = 56
+    object ActionAddNewCompany: TAction
+      Caption = 'ActionAddNewCompany'
+      OnExecute = ActionAddNewCompanyExecute
+    end
+    object ActionEditCompany: TAction
+      Caption = 'ActionEditCompany'
+      OnExecute = ActionEditCompanyExecute
+    end
+    object ActionDeleteCompany: TAction
+      Caption = 'ActionDeleteCompany'
+      OnExecute = ActionDeleteCompanyExecute
+    end
+  end
+end

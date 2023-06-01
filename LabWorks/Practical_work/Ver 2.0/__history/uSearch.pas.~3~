@@ -1,0 +1,151 @@
+unit uSearch;
+
+interface
+
+uses
+  EmployeeClass, CompanyClass, DAOCompanies, DAOEmployees;
+
+type
+  PPointerSuggCompanies = ^listOfSuggCompanies;
+  listOfSuggCompanies = record
+    suggCompany: TCompany;
+    next: PPointerSuggCompanies;
+  end;
+
+  function uSearch_findSuggCompaniesStrict(employee: TEmployee): PPointerSuggCompanies;
+  function uSearch_findSuggCompanies(employee: TEmployee): PPointerSuggCompanies;
+  function uSearch_getListOfSuggestions: PPointerSuggCompanies;
+  procedure uSearch_SetCallback(ACallBack: TOnModelChanged);
+
+implementation
+
+uses
+  ShellAPI;
+
+var
+  listOfSuggestions: PPointerSuggCompanies;
+  ViewCallback: TOnModelChanged;
+
+  procedure uSearch_SetCallback(ACallBack: TOnModelChanged);
+  begin
+    ViewCallback := ACallBack;
+  end;
+
+
+  function uSearch_findSuggCompaniesStrict(employee: TEmployee): PPointerSuggCompanies;
+  var
+    listOfSuggC: PPointerSuggCompanies;
+    listOfC: PPointerCompanies;
+//    tmpStr1, tmpStr2: String;
+  begin
+    new(listOfSuggC);
+    listOfSuggestions := listOfSuggC;
+
+    listOfC := getListOfCompanies;
+    listOfC := listOfC^.next;
+
+//    tmpStr1 := employee.specialityOf;
+//    tmpStr2 := listOfC.companyFromList.nameOfSpeciality;
+
+    while listOfC <> nil do
+    begin
+      if (employee.specialityOf	= listOfC.companyFromList.nameOfSpeciality)
+        and (employee.preferredPosition	= listOfC.companyFromList.positionName)
+        and (listOfC.companyFromList.salary	>= employee.minSalary)
+        and (getEmployeeAge(employee) >= listOfC.companyFromList.minAge)
+        and (getEmployeeAge(employee) <= listOfC.companyFromList.maxAge)
+        and (employee.hasHigherEducation = listOfC.companyFromList.needsHigherEducation) then
+      begin
+        new(listOfSuggC^.next);
+        listOfSuggC := listOfSuggC^.next;
+        listOfSuggC.suggCompany	:= listOfC.companyFromList;
+      end;
+      listOfC := listOfC^.next;
+    end;
+
+    listOfSuggC^.next	:= nil;
+
+    result := listOfSuggestions;
+
+  end;
+
+  function uSearch_findSuggCompanies(employee: TEmployee): PPointerSuggCompanies;
+   var
+    listOfSuggC: PPointerSuggCompanies;
+    listOfC: PPointerCompanies;
+    points, salaryPercent: Double;
+  begin
+    new(listOfSuggC);
+    listOfSuggestions := listOfSuggC;
+
+    listOfC := getListOfCompanies;
+    listOfC := listOfC^.next;
+    points := 0;
+
+    while listOfC <> nil do
+    begin
+      if (employee.specialityOf	= listOfC.companyFromList.nameOfSpeciality) then
+      begin
+        if (getEmployeeAge(employee) <= listOfC.companyFromList.minAge) then
+        begin
+          if (listOfC.companyFromList.minAge - getEmployeeAge(employee) <= 2) then
+          begin
+            points := points + 0.5;
+          end;
+        end
+        else if ((getEmployeeAge(employee) >= listOfC.companyFromList.maxAge)) then
+        begin
+          if (getEmployeeAge(employee) - listOfC.companyFromList.maxAge <= 5) then
+          begin
+            points := points + 0.5;
+          end;
+        end
+        else
+        begin
+          points := points + 1;
+        end;
+
+        if employee.hasHigherEducation = listOfC.companyFromList.needsHigherEducation	then
+        begin
+          points := points + 1;
+        end;
+
+        salaryPercent := (employee.minSalary * 10) / 100;
+
+        if listOfC.companyFromList.salary	>= employee.minSalary then
+        begin
+          points := points + 1;
+        end
+        else if (employee.minSalary	- listOfC.companyFromList.salary <= salaryPercent) then
+        begin
+          points := points + 0.5;
+        end;
+
+        points := points + 0.5;
+      end
+      else
+      begin
+        points := 0;
+      end;
+
+      if points >= 2 then
+      begin
+        new(listOfSuggC^.next);
+        listOfSuggC := listOfSuggC^.next;
+        listOfSuggC.suggCompany	:= listOfC.companyFromList;
+      end;
+      listOfC := listOfC^.next;
+    end;
+    listOfSuggC^.next	:= nil;
+
+    result := listOfSuggestions;
+
+  end;
+
+
+  function uSearch_getListOfSuggestions(): PPointerSuggCompanies;
+  begin
+    result := listOfSuggestions;
+  end;
+
+end.

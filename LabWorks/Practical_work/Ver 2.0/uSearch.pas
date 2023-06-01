@@ -1,0 +1,270 @@
+unit uSearch;
+
+interface
+
+uses
+  EmployeeClass, CompanyClass, DAOCompanies, DAOEmployees;
+
+type
+  PPointerSuggCompanies = ^TListOfSuggCompanies;
+  TListOfSuggCompanies = record
+    suggCompany: TCompany;
+    next: PPointerSuggCompanies;
+  end;
+
+
+  function uSearch_findSuggCompaniesStrict(employee: TEmployee): PPointerSuggCompanies;
+  function uSearch_findSuggCompanies(employee: TEmployee): PPointerSuggCompanies;
+  function uSearch_getListOfSuggestions: PPointerSuggCompanies;
+  procedure uSearch_SetCallback(ACallBack: TOnModelChanged);
+  function uSearch_deficitSpecialities(): PPointerCompanies;
+  function uSearch_getListOfDeficitSpec(): PPointerCompanies;
+  function uSearch_noCandidates(): PPointerCompanies;
+  function uSearch_getListOfNoCandidates(): PPointerCompanies;
+
+implementation
+
+uses
+  ShellAPI;
+
+var
+  listOfSuggestions: PPointerSuggCompanies;
+  listOfNoCandidates: PPointerCompanies;
+  ViewCallback: TOnModelChanged;
+  listOfDeficitSpec: PPointerCompanies;
+
+  procedure uSearch_SetCallback(ACallBack: TOnModelChanged);
+  begin
+    ViewCallback := ACallBack;
+  end;
+
+
+  function uSearch_findSuggCompaniesStrict(employee: TEmployee): PPointerSuggCompanies;
+  var
+    listOfSuggC: PPointerSuggCompanies;
+    listOfC: PPointerCompanies;
+//    tmpStr1, tmpStr2: String;
+  begin
+    new(listOfSuggC);
+    listOfSuggestions := listOfSuggC;
+
+    listOfC := getListOfCompanies;
+    listOfC := listOfC^.next;
+
+//    tmpStr1 := employee.specialityOf;
+//    tmpStr2 := listOfC.companyFromList.nameOfSpeciality;
+
+    while listOfC <> nil do
+    begin
+      if (employee.specialityOf	= listOfC.companyFromList.nameOfSpeciality)
+        and (employee.preferredPosition	= listOfC.companyFromList.positionName)
+        and (listOfC.companyFromList.salary	>= employee.minSalary)
+        and (getEmployeeAge(employee) >= listOfC.companyFromList.minAge)
+        and (getEmployeeAge(employee) <= listOfC.companyFromList.maxAge)
+        and (employee.hasHigherEducation = listOfC.companyFromList.needsHigherEducation) then
+      begin
+        new(listOfSuggC^.next);
+        listOfSuggC := listOfSuggC^.next;
+        listOfSuggC.suggCompany	:= listOfC.companyFromList;
+      end;
+      listOfC := listOfC^.next;
+    end;
+
+    listOfSuggC^.next	:= nil;
+
+    result := listOfSuggestions;
+
+  end;
+
+  function uSearch_findSuggCompanies(employee: TEmployee): PPointerSuggCompanies;
+   var
+    listOfSuggC: PPointerSuggCompanies;
+    listOfC: PPointerCompanies;
+    points, salaryPercent: Double;
+  begin
+    new(listOfSuggC);
+    listOfSuggestions := listOfSuggC;
+
+    listOfC := getListOfCompanies;
+    listOfC := listOfC^.next;
+    points := 0;
+
+    while listOfC <> nil do
+    begin
+      if (employee.specialityOf	= listOfC.companyFromList.nameOfSpeciality) then
+      begin
+        if (getEmployeeAge(employee) <= listOfC.companyFromList.minAge) then
+        begin
+          if (listOfC.companyFromList.minAge - getEmployeeAge(employee) <= 2) then
+          begin
+            points := points + 0.5;
+          end;
+        end
+        else if ((getEmployeeAge(employee) >= listOfC.companyFromList.maxAge)) then
+        begin
+          if (getEmployeeAge(employee) - listOfC.companyFromList.maxAge <= 5) then
+          begin
+            points := points + 0.5;
+          end;
+        end
+        else
+        begin
+          points := points + 1;
+        end;
+
+        if employee.hasHigherEducation = listOfC.companyFromList.needsHigherEducation	then
+        begin
+          points := points + 1;
+        end;
+
+        salaryPercent := (employee.minSalary * 10) / 100;
+
+        if listOfC.companyFromList.salary	>= employee.minSalary then
+        begin
+          points := points + 1;
+        end
+        else if (employee.minSalary	- listOfC.companyFromList.salary <= salaryPercent) then
+        begin
+          points := points + 0.5;
+        end;
+
+        points := points + 0.5;
+      end
+      else
+      begin
+        points := 0;
+      end;
+
+      if points >= 2 then
+      begin
+        new(listOfSuggC^.next);
+        listOfSuggC := listOfSuggC^.next;
+        listOfSuggC.suggCompany	:= listOfC.companyFromList;
+      end;
+      listOfC := listOfC^.next;
+    end;
+    listOfSuggC^.next	:= nil;
+
+    result := listOfSuggestions;
+
+  end;
+
+
+  function uSearch_getListOfSuggestions(): PPointerSuggCompanies;
+  begin
+    result := listOfSuggestions;
+  end;
+
+  function uSearch_deficitSpecialities(): PPointerCompanies;
+  var
+    currSpec: PPointerCompanies;
+    currCompany: PPointerCompanies;
+    currEmployee, headOfCurrEmployee: PPointerEmployees;
+    isFound: Boolean;
+  begin
+    isFound := false;
+
+    new(currSpec);
+    listOfDeficitSpec := currSpec;
+
+    currCompany := getListOfCompanies;
+    currCompany := currCompany^.next;
+
+    currEmployee := getListOfEmployees;
+    headOfCurrEmployee := currEmployee;
+
+
+    while (currCompany <> nil) and (isFound = false) do
+    begin
+      while (currEmployee^.next <> nil) and (isFound = false) do
+      begin
+        currEmployee := currEmployee^.next;
+        if currCompany^.companyFromList.nameOfSpeciality = currEmployee^.employeeFromList.specialityOf then
+        begin
+          isFound := true;
+        end;
+      end;
+
+      if isFound = false then
+      begin
+        new(currSpec^.next);
+        currSpec := currSpec^.next;
+        currSpec^.companyFromList := currCompany^.companyFromList;
+      end;
+
+      currCompany := currCompany^.next;
+      currEmployee := headOfCurrEmployee;
+      isFound := false;
+
+    end;
+
+    currSpec^.next := nil;
+
+    result := listOfDeficitSpec;
+
+  end;
+
+  function uSearch_noCandidates(): PPointerCompanies;
+  var
+    currSpec: PPointerCompanies;
+    currCompany: PPointerCompanies;
+    currEmployee, headOfCurrEmployee: PPointerEmployees;
+    isFound: Boolean;
+  begin
+    isFound := false;
+
+    new(currSpec);
+    listOfNoCandidates := currSpec;
+
+    currCompany := getListOfCompanies;
+    currCompany := currCompany^.next;
+
+    currEmployee := getListOfEmployees;
+    headOfCurrEmployee := currEmployee;
+
+
+    while (currCompany <> nil) and (isFound = false) do
+    begin
+      while (currEmployee^.next <> nil) and (isFound = false) do
+      begin
+        currEmployee := currEmployee^.next;
+        if (currEmployee.employeeFromList.specialityOf= currCompany.companyFromList.nameOfSpeciality)
+        and (currEmployee.employeeFromList.preferredPosition= currCompany.companyFromList.positionName)
+        and (currCompany.companyFromList.salary	>= currEmployee.employeeFromList.minSalary)
+        and (getEmployeeAge(currEmployee.employeeFromList) >= currCompany.companyFromList.minAge)
+        and (getEmployeeAge(currEmployee.employeeFromList) <= currCompany.companyFromList.maxAge)
+        and (currEmployee.employeeFromList.hasHigherEducation = currCompany.companyFromList.needsHigherEducation) then
+        begin
+          isFound := true;
+        end;
+      end;
+
+      if isFound = false then
+      begin
+        new(currSpec^.next);
+        currSpec := currSpec^.next;
+        currSpec^.companyFromList := currCompany^.companyFromList;
+      end;
+
+      currCompany := currCompany^.next;
+      currEmployee := headOfCurrEmployee;
+      isFound := false;
+
+    end;
+
+    currSpec^.next := nil;
+
+    result := listOfNoCandidates;
+  end;
+
+  function uSearch_getListOfDeficitSpec(): PPointerCompanies;
+  begin
+    result := listOfDeficitSpec;
+  end;
+
+  function uSearch_getListOfNoCandidates(): PPointerCompanies;
+  begin
+    result := listOfNoCandidates;
+  end;
+
+end.

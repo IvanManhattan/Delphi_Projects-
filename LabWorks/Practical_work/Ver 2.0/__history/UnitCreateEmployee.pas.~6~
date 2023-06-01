@@ -1,0 +1,73 @@
+unit UnitCreateEmployee;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, EmployeeClass;
+
+type
+  TFormCreateEmployee = class(TForm)
+    PanelMainCreateCompany: TPanel;
+    LabelLogo: TLabel;
+    EditName: TEdit;
+    EditSpeciality: TEdit;
+    EditPosition: TEdit;
+    EditSalary: TEdit;
+    EditDate: TEdit;
+    EditHasHiggherEducation: TEdit;
+    ButtonCreate: TButton;
+    ButtonCancel: TButton;
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    function ShowForNewEmployee(var employee: TEmployee): TModalResult;
+//    function ShowForEditEmployee(var employee: TEmployee): TModalResult;
+  end;
+
+var
+  FormCreateEmployee: TFormCreateEmployee;
+
+implementation
+
+uses
+  IniFiles, ShellAPI;
+{$R *.dfm}
+
+
+  function TFormCreateEmployee.ShowForNewEmployee(var employee: TEmployee): TModalResult;
+  begin
+    Result := ShowModal;
+
+    if Result = MrOk then
+    begin
+      Employee := TEmployee.Create;
+      with Employee do
+      begin
+        fullName := EditName.Text;
+        dateOfBirth := StrToDate(EditDate.Text);
+        specialityOf := EditSpeciality.Text;
+        preferredPosition := EditPosition.Text;
+        minSalary := StrToFloat(EditSalary.Text);
+        hasHigherEducation := StrToBool(EditHasHiggherEducation.Text);
+      end;
+    end;
+  end;
+
+  procedure TFormCreateEmployee.FormCreate(Sender: TObject);
+  var
+    FileName: String;
+    iniSettings: TMemIniFile;
+  begin
+    FileName := ExtractFilePath(Application.ExeName) + 'settings.ini';
+    iniSettings := TMemIniFile.Create(FileName);
+    try
+      Left := iniSettings.ReadInteger('Window', 'Left', 0) + 30;
+      Top := iniSettings.ReadInteger('Window', 'Top', 0) + 30;
+    finally
+      iniSettings.Free;
+    end;
+  end;
+
+end.

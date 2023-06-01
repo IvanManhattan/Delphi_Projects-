@@ -1,0 +1,71 @@
+unit UnitCreateEmployee;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, EmployeeClass;
+
+type
+  TFormCreateEmployee = class(TForm)
+    PanelMainCreateCompany: TPanel;
+    LabelLogo: TLabel;
+    EditName: TEdit;
+    EditSpeciality: TEdit;
+    EditPosition: TEdit;
+    EditSalary: TEdit;
+    EditDate: TEdit;
+    EditHasHigherEducation: TEdit;
+    ButtonCreate: TButton;
+    ButtonCancel: TButton;
+    procedure FormCreate(Sender: TObject);
+    function ShowForNewEmployee(var employee: TEmployee): TModalResult;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  formCreateEmployee: TFormCreateEmployee;
+
+implementation
+
+uses
+  IniFiles, ShellAPI;
+
+{$R *.dfm}
+
+
+  procedure TFormCreateEmployee.FormCreate(Sender: TObject);
+  var
+    FileName: String;
+    iniSettings: TMemIniFile;
+  begin
+    FileName := ExtractFilePath(Application.ExeName) + 'settingsCompany.ini';
+    iniSettings := TMemIniFile.Create(FileName);
+    try
+      Left := iniSettings.ReadInteger('Form', 'Left', 0) + 30;
+      Top := iniSettings.ReadInteger('Form', 'Top', 0) + 30;
+    finally
+      iniSettings.Free;
+    end;
+  end;
+
+  function TFormCreateEmployee.ShowForNewEmployee(var employee: TEmployee): TModalResult;
+  begin
+    Result := ShowModal;
+
+    if Result = mrOk then
+    begin
+      employee := TEmployee.Create;
+      employee.fullName	:= EditName.Text;
+      employee.dateOfBirth := StrToDate(EditDate.Text);
+      employee.specialityOf	:= EditSpeciality.Text;
+      employee.hasHigherEducation	:= StrToBool(EditHasHigherEducation.Text);
+      employee.preferredPosition := EditPosition.Text;
+      employee.minSalary := StrToFloat(EditSalary.Text);
+    end;
+  end;
+
+end.
